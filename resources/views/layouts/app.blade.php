@@ -24,7 +24,6 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('leaflet/leaflet.css') }}">
     <!-- <link rel="stylesheet" href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}"> -->
     <link rel="stylesheet" href="{{asset("plugins/datatables-bs4/css/dataTables.bootstrap4.min.css")}}">
     <link rel="stylesheet" href="{{asset("plugins/datatables-responsive/css/responsive.bootstrap4.min.css")}}">
@@ -104,39 +103,27 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
-
             <li class="nav-item active">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-edit"></i>
-                    Emergencias
+                <a class="nav-link" href="{{route('rifa.list')}}">
+                    <i class="fas fa-fw fa-suitcase"></i>
+                    Control de Rifa
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{route('home')}}">
-                            <i class="fas fa-map-marked"></i>
-                            Mapa</a>
-                        <a class="collapse-item" href="{{route('emergencias.list')}}">
-                            <i class="fas fa-globe"></i>
-                            General</a>
-                    </div>
-                </div>
             </li>
             <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item active">
-                <a class="nav-link" href="{{route('frentes.list')}}">
+                <a class="nav-link" href="{{route('clientes.list')}}">
                     <i class="fas fa-fw fa-mountain"></i>
-                    Frentes</a>
+                    Clientes</a>
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item active">
-                <a class="nav-link" href="{{route('organismos.list')}}">
+                <a class="nav-link" href="{{route('pagos.list')}}">
                     <i class="fas fa-fw fa-suitcase"></i>
-                    Organismos
+                    Pagos
                 </a>
             </li>
 
@@ -205,10 +192,15 @@
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="mx-3">
-                    <strong>Copyright &copy; 2024-2025 <a href="">Gobierno Bolivariano de Trujillo</a>.</strong>
+                    <strong>Copyright &copy; 2024-2025 <a href=""> 
+                        <!-- Nombre de la empresa -->
+                    </a>.</strong>
                     Todos los derechos reservados.
                     <div class="float-right d-none d-sm-inline-block">
-                        <b>Dirección General de Informática</b>
+                        <b> 
+
+                        <!-- aqui van los desarrolladores -->
+                        </b>
                     </div>
                 </div>
             </footer>
@@ -232,14 +224,11 @@
     <script src="{{asset('plugins/js/sb-admin-2.min.js')}}"></script>
     <!-- JS para maps -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.js"></script>
-    <script src="{{asset('leaflet/leaflet.js')}}"></script>
-    <!-- <script src="{{asset('plugins/jquery/jquery-3.7.1.min.map')}}"></script> -->
-    <!-- <script src="{{asset('plugins/bootstrap/js/bootstrap.min.js')}}"></script> -->
+ 
     <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{asset('plugins/js/datatables-spanish.js')}}"></script>
     <script src="{{asset('plugins/moment/moment.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('ve.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     @yield('scripts')

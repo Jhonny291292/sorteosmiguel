@@ -1,14 +1,10 @@
 <?php
 
-use App\Http\Controllers\EmergenciasController;
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\PagoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\organismosController;
-use App\Http\Controllers\frenteController;
-use App\Http\Controllers\municipiosController;
-use App\Http\Controllers\parroquiasController;
-use App\Http\Controllers\estructurasController;
 
 
 
@@ -28,10 +24,12 @@ use App\Http\Controllers\estructurasController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::apiResource('/emergencias', EmergenciasController::class);
-Route::apiResource('/organismos', organismosController::class);
-Route::apiResource('/frentes', frenteController::class);
-Route::apiResource('/municipios', municipiosController::class);
-Route::apiResource('/parroquias', parroquiasController::class);
-Route::apiResource('/estructuras', estructurasController::class);
+// Route::apiResource('/emergencias', EmergenciasController::class);
+// Route::apiResource('/organismos', organismosController::class);
+// Route::apiResource('/frentes', frenteController::class);
+// Route::apiResource('/municipios', municipiosController::class);
+// Route::apiResource('/parroquias', parroquiasController::class);
+// Route::apiResource('/estructuras', estructurasController::class);
+Route::apiResource('/clientes', ClienteController::class);
+Route::apiResource('/pagos', PagoController::class);
 Route::apiResource('/user', UserController::class);

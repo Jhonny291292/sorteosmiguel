@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pago;
 use Illuminate\Http\Request;
-use App\Models\Municipio;
 
-class municipiosController extends Controller
+class RifaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data = Municipio::where('estado_id',19)->get();
-        return response()->json([
-            'status' => 'ok',
-            'data' => $data
-        ], 200);
+        //
     }
 
     /**
@@ -40,18 +36,7 @@ class municipiosController extends Controller
      */
     public function show(string $id)
     {
-        $data = Municipio::where('id', $id)->get();
-        if ($data) {
-            return response()->json([
-                'status' => 'ok',
-                'data' => $data
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Registro no encontrado'
-            ], 404);
-        }
+        //
     }
 
     /**
@@ -76,5 +61,10 @@ class municipiosController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function list()
+    {
+        $data = Pago::all();
+        return view('admin.rifas.index', compact('data'));
     }
 }

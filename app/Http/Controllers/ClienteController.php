@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use Illuminate\Http\Request;
-use App\Models\Organismo;
 
-class organismosController extends Controller
+class ClienteController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data = Organismo::all();
+        $data = Cliente::all();
         return response()->json([
-            'status' => 'ok',
+            'status' => true,
             'data' => $data
-        ], 200);
+        ]);
     }
 
     /**
@@ -32,16 +32,17 @@ class organismosController extends Controller
      */
     public function store(Request $request)
     {
-        $data = Organismo::create([
+        $data = Cliente::create([
+            'cedula' => $request->cedula,
             'nombre' => $request->nombre,
-            'responsable' => $request->responsable,
-            'telefono' => $request->telefono
-            
+            'email' => $request->email,
+            'telefono' => $request->telefono,
+            'direccion' => $request->direccion
         ]);
         return response()->json([
             'status' => 'ok',
-             'data' => $data
-         ], 200);
+            'data' => $data
+        ], 200);
     }
 
     /**
@@ -49,8 +50,11 @@ class organismosController extends Controller
      */
     public function show(string $id)
     {
-        $data = Organismo::where('id', $id)->get();
-        if ($data) {
+        $data = Cliente::where(function($query) use ($id) {
+            $query->where('id', $id)
+                  ->orWhere('cedula', $id);
+        })->get();
+        if ($data->isNotEmpty()) {
             return response()->json([
                 'status' => 'ok',
                 'data' => $data
@@ -76,10 +80,19 @@ class organismosController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $data = Organismo::find($id)->fill($request->all())->save();
+        $data = Cliente::find($id);
+
+        $data->fill([
+            'cedula' => $request->cedula,
+            'nombre' => $request->nombre,
+            'email' => $request->email,
+            'telefono' => $request->telefono,
+            'direccion' => $request->direccion
+        ])->save();
+
         return response()->json([
-           'status' => 'ok',
-            'data' => $data
+            'status' => 'ok',
+            'data' => $request->email
         ], 200);
     }
 
@@ -88,16 +101,15 @@ class organismosController extends Controller
      */
     public function destroy(string $id)
     {
-        $data = Organismo::find($id)->delete();
+        $data = Cliente::find($id)->delete();
         return response()->json([
             'status' => 'ok',
             'message' => "data eliminada con éxito"
         ], 200);
     }
-
     public function list()
     {
-        $data = Organismo::all();
-        return view('admin.organismos.index', compact('data'));
+        $data = Cliente::all();
+        return view('admin.clientes.index', compact('data'));
     }
 }

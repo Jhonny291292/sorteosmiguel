@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
 @section('title')
-Organismos
+Clientes
 @endsection
 
 @section('modals')
-<!-- Modal Create Users -->
-<div class="modal fade" id="modal-organismo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal Create Cliente -->
+<div class="modal fade" id="modal-cliente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-title">Agregar Organismo</h5>
+                <h5 class="modal-title" id="modal-title">Agregar Cliente</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&minus;</span>
                 </button>
@@ -19,11 +19,18 @@ Organismos
                 {{-- Formulario --}}
                 <div class="modal-body">
                     @csrf
-                    <div class="row gy-2 gx-3 align-items-center">
-                        <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="cedula">Cédula</label>
+                                <input type="text" class="form-control" id="cedula" name="cedula"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="nombre">Nombre</label>
-                                <input placeholder="Nombre" type="text" class="form-control" id="nombre" name="nombre"
+                                <input type="text" class="form-control" id="nombre" name="nombre"
                                     required>
                             </div>
                         </div>
@@ -31,16 +38,25 @@ Organismos
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="coordenadas">Responsable</label>
-                                <input placeholder="Nombre y apellido" type="text" class="form-control" id="responsable"
-                                    name="responsable" required>
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email"
+                                    name="email">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="telefono">Teléfono</label>
-                                <input placeholder="Tlf de contacto" type="text" class="form-control" id="telefono"
-                                    name="telefono" required>
+                                <input type="text" class="form-control" id="telefono"
+                                    name="telefono">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="direccion">Dirección</label>
+                                <textarea class="form-control" name="direccion" id="direccion" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -50,8 +66,8 @@ Organismos
                         <i class="fas fa-check"></i> Agregar
                     </button>
                 </div>
-                {{-- Fin Formulario
-                <hr> --}}
+         
+                <hr> 
             </form>
         </div>
     </div>
@@ -65,25 +81,26 @@ Organismos
         <div class="card-title p-4 border-bottom">
             <div class="row">
                 <div class="col-md-6">
-                    <h4><i class="fa fa-th"></i> Organismos Registrados</h4>
+                    <h4><i class="fa fa-th"></i> Clientes Registrados</h4>
                 </div>
                 <div class="col-md-6 text-right" id="btnAdd">
                     <a href="#" class="btn btn-primary btn-sm shadow" id="btn-add" data-toggle="modal"
-                        data-target="#modal-organismo"><i class="fa fa-plus"></i> Nuevo Registro</a>
+                        data-target="#modal-cliente"><i class="fa fa-plus"></i> Nuevo Registro</a>
                 </div>
             </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped" id="tabla-organismos">
+                <table class="table table-bordered table-striped" id="tabla-usuarios">
                     <thead class="text-center">
                         <th>N°</th>
+                        <th>Cédula</th>
                         <th>Nombre</th>
-                        <th>Responsable</th>
+                        <th>Email</th>
                         <th>Teléfono</th>
                         <th>Acciones</th>
                     </thead>
-                    <tbody id="tbody-organismos"></tbody>
+                    <tbody id="tbody-usuarios"></tbody>
                 </table>
             </div>
         </div>
@@ -93,126 +110,144 @@ Organismos
 
 @section('scripts')
 <script>
-    $(document).ready(function () {
-        var id_organismo_gl = "";
-        consultarOrganismos();
+    $(document).ready(function() {
+        var id_cliente_bd = "";
+        consultarClientes();
 
         // Enviar formulario de registro
-        $(document).on('submit', '#form-add', function (e) {
+        $(document).on('submit', '#form-add', function(e) {
             e.preventDefault();
             let form = new FormData(this);
             form.delete('_method');
 
-            fetch('api/organismos', {
-                method: 'POST',
-                body: form,
-                headers: {
-                    // 'Authorization': 'Bearer ' + token, 
-                }
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json(); // O response.text() si no esperas un JSON
-                    } else {
-                        throw new Error('Error en la solicitud: ' + response.statusText);
+            fetch('api/clientes', {
+                    method: 'POST',
+                    body: form,
+                    headers: {
+                        // 'Authorization': 'Bearer ' + token, 
                     }
                 })
-                .then(data => {
-                    Swal.fire({
-                        title: 'Registro correcto',
-                        icon: 'success',
-                        timer: 3000, // 3 segundos
-                        timerProgressBar: true,
-                        willClose: () => {
-                            // Puedes agregar acciones aquí si lo deseas
-                            document.getElementById('form-add').reset();
+                .then(res => res.json())
+                .then(function(data) {
+                    if (data.status) {
+                        Swal.fire(
+                            '¡Perfecto!',
+                            data.message,
+                            'success'
+                        )
+                        $('#form-add').trigger('reset');
+                        consultarClientes();
+                    }
+                    if (!data.status) {
+
+                        template = `
+                                <div>
+                                    <ol>     
+                            `;
+                        if (data.mjs) {
+                            template += "<li class='text-left text-danger'>" + data.mjs + "</li>";
+                        } else {
+
+                            $.each(data.errors, function(key, value) {
+                                template += "<li class='text-left text-danger'>" + value + "</li>";
+                            });
+
                         }
-                    });
-                    //actualizamos la lista
-                    consultarOrganismos();
+                        template += `
+                                </ol>
+                            </div>  
+                            `;
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: '¡Ups!',
+                            html: template
+                        })
+
+                    }
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
 
         })
 
-        $(document).on('submit', '#form-edit', function (e) {
+        $(document).on('submit', '#form-edit', function(e) {
             e.preventDefault();
 
             let form = new FormData(this);
             form.append('_method', 'PUT');
 
-            fetch('api/organismos/' + id_organismo_gl, {
-                method: 'POST',
-                body: form,
-                headers: {
-                    // 'Authorization': 'Bearer ' + token, 
-                }
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json(); // O response.text() si no esperas un JSON
-                    } else {
-                        throw new Error('Error en la solicitud: ' + response.statusText);
+            fetch('api/clientes/' + id_cliente_bd, {
+                    method: 'POST',
+                    body: form,
+                    headers: {
+                        // 'Authorization': 'Bearer ' + token, 
                     }
                 })
+                .then(res => res.json())
                 .then(data => {
+                    console.log(data.data);
+                    if (data.status) {
 
-                    Swal.fire({
-                        title: 'Actualización correcta',
-                        icon: 'success',
-                        timer: 3000, // 3 segundos
-                        timerProgressBar: true,
-                        willClose: () => {
-                            // agregar acciones
-                        }
-                    });
-                    //actualizamos la lista
-                    consultarOrganismos();
+                        Swal.fire({
+                            title: 'Actualización correcta',
+                            icon: 'success',
+                            timer: 3000, // 3 segundos
+                            timerProgressBar: true,
+                            willClose: () => {
+                                // agregar acciones
+                            }
+                        });
+                        //actualizamos la lista
+                        consultarClientes();
+                    }
+                    if (!data.status) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '¡Ups!',
+                            html: template
+                        })
+
+                    }
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
 
         })
 
-        $(document).on("click", "#btnAdd", function () {
+        $(document).on("click", "#btnAdd", function() {
             $('#form-edit').trigger('reset');
             $('#form-add').trigger('reset');
             $('#form-edit').attr('id', 'form-add');
             $('#form-add *').prop('disabled', false);
+            $("#password").attr('required', true);
             $("#btn-submit").html(`<i class="fas fa-check"></i> Agregar`);
             $("#btn-submit").show();
         })
 
-        $(document).on("click", ".edit", function () {
+        $(document).on("click", ".edit", function() {
             $('#form-edit').trigger('reset');
             $('#form-add').trigger('reset');
             $('#form-add').attr('id', 'form-edit');
             $('#form-edit *').prop('disabled', false);
             $("#btn-submit").html(`<i class="fas fa-check"></i> Editar`);
             $("#btn-submit").show();
-
-            var id_org = $(this).attr('data-id');
-            showDatosOrg(id_org);
+            $("#password").attr('required', false);
+            var id_cliente = $(this).attr('data-id');
+            showDatosOrg(id_cliente);
 
         })
 
-        $(document).on("click", ".detalle", function () {
+        $(document).on("click", ".detalle", function() {
             $('#form-edit').trigger('reset');
             $('#form-add').trigger('reset');
             $('#form-add *').prop('disabled', true);
             $('#form-edit *').prop('disabled', true);
             $("#btn-submit").hide();
 
-            var id_org = $(this).attr('data-id');
-            showDatosOrg(id_org);
+            var id_cliente = $(this).attr('data-id');
+            showDatosOrg(id_cliente);
         })
 
 
-        $(document).on("click", ".del", function () {
-            var id_org = $(this).attr('data-id');
+        $(document).on("click", ".del", function() {
+            var id_cliente = $(this).attr('data-id');
 
             Swal.fire({
                 title: '¿Estás seguro(a) de eliminar este registro?',
@@ -249,22 +284,22 @@ Organismos
                     })
 
                     fetch(
-                        'api/organismos/' + id_org, {
-                        method: 'DELETE'
-                    }
-                    ).then(res => res.json())
-                        .then(function (data) {
+                            'api/clientes/' + id_cliente, {
+                                method: 'DELETE'
+                            }
+                        ).then(res => res.json())
+                        .then(function(data) {
                             if (data.status) {
                                 Swal.fire(
                                     '¡Perfecto!',
                                     data.message,
                                     'success'
                                 )
-                                id_org = "";
+                                id_cliente = "";
                                 //actualizamos la lista
-                                consultarOrganismos();
+                                consultarClientes();
                             }
-                        }).catch(function (err) {
+                        }).catch(function(err) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
@@ -275,14 +310,14 @@ Organismos
             });
         })
 
-        function consultarOrganismos() {
+        function consultarClientes() {
 
-            fetch('api/organismos', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+            fetch('api/clientes', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error en la consulta...');
@@ -297,14 +332,15 @@ Organismos
                         template += `
                             <tr>
                                 <td class="text-center"> ${num}</td>
-                                <td> ${e.nombre}</td>
-                                <td> ${e.responsable}</td>
-                                <td> ${e.telefono}</td>
+                                 <td class="text-center"> ${e.cedula}</td>
+                                <td class="text-center"> ${e.nombre}</td>
+                                <td class="text-center"> ${e.email}</td>
+                                <td class="text-center"> ${e.telefono}</td>
                                 <td class="d-flex justify-content-center"> 
-                                    <button type="button" class="detalle btn btn-success" data-id="${e.id}" data-toggle="modal" data-target="#modal-organismo">
+                                    <button type="button" class="detalle btn btn-success" data-id="${e.id}" data-toggle="modal" data-target="#modal-cliente">
                                       <i class="fas fa-info-circle"></i>
                                     </button>
-                                    <button type="button" class="edit btn btn-warning" data-id="${e.id}" data-toggle="modal" data-target="#modal-organismo">
+                                    <button type="button" class="edit btn btn-warning" data-id="${e.id}" data-toggle="modal" data-target="#modal-cliente">
                                       <i class="fas fa-edit"></i>
                                     </button>
                                     <button type="button" class="del btn btn-danger" data-id="${e.id}">
@@ -316,9 +352,9 @@ Organismos
                         num++;
                     });
                     //agregamos los datos a la tabla
-                    $('#tabla-organismos').DataTable().destroy();
+                    $('#tabla-usuarios').DataTable().destroy();
 
-                    $('#tbody-organismos').html(template);
+                    $('#tbody-usuarios').html(template);
 
                     $("table").DataTable({
                         language: translate,
@@ -329,27 +365,26 @@ Organismos
                 .catch(error => console.error('Error:', error));
         }
 
-        function showDatosOrg(id_org) {
-            id_organismo_gl = id_org
+        function showDatosOrg(id_cliente) {
+            id_cliente_bd = id_cliente
             fetch(
-                'api/organismos/' + id_org, {
-                method: 'GET'
-            }
-            ).then(res => res.json())
-                .then(function (data) {
-                    console.log(data);
-                    
+                    'api/clientes/' + id_cliente, {
+                        method: 'GET'
+                    }
+                ).then(res => res.json())
+                .then(function(data) {
                     if (data.status) {
-
                         data.data.forEach(e => {
 
+                            $("#cedula").val(e.cedula);
                             $("#nombre").val(e.nombre);
-                            $("#responsable").val(e.responsable);
+                            $("#email").val(e.email);
                             $("#telefono").val(e.telefono);
+                            $("#direccion").text(e.direccion);
 
                         });
                     }
-                }).catch(function (err) {
+                }).catch(function(err) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
