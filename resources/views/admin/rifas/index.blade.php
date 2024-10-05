@@ -43,26 +43,16 @@ Rifas
                 <div class="col-md-6">
                     <h4><i class="fa fa-th"></i> Rifa</h4>
                 </div>
-                <div class="col-md-6 text-right" id="btnAdd">
+                <!-- <div class="col-md-6 text-right" id="btnAdd">
                     <a href="#" class="btn btn-primary btn-sm shadow" id="btn-add" data-toggle="modal"
                         data-target="#modal-rifa"><i class="fa fa-plus"></i> Nuevo Registro</a>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped" id="tabla-usuarios">
-                    <thead class="text-center">
-                        <th>N°</th>
-                        <th>Cédula</th>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Teléfono</th>
-                        <th>Acciones</th>
-                    </thead>
-                    <tbody id="tbody-usuarios"></tbody>
-                </table>
-            </div>
+           
+
+
         </div>
     </div>
 </div>
@@ -71,7 +61,56 @@ Rifas
 @section('scripts')
 <script>
     $(document).ready(function() {
-        console.log("Activo");
+
+        // Generar números del 0 al 999
+        let numeros = [];
+        for (let i = 0; i < 1000; i++) {
+            numeros.push(i);
+        }
+
+        // Agrupar en secciones de 100
+        let secciones = [];
+        for (let i = 0; i < numeros.length; i += 100) {
+            secciones.push(numeros.slice(i, i + 100));
+        }
+        console.log(secciones); // Muestra las secciones en la consola
+
+        var numeros_comprados = [5, 15, 100, 250, 999];
+
+        // Comparar y mostrar en consola
+        secciones.forEach((seccion, index) => {
+            seccion.forEach(numero => {
+                if (numeros_comprados.includes(numero)) {
+                    console.log(`El número ${numero} está en la sección ${index + 1}`);
+                }
+            });
+        });
+
+        // ConsultarNummeros();
+
+        // function ConsultarNummeros() {
+        //     fetch('api/rifas', {
+        //             method: 'GET',
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             }
+        //         })
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Error en la consulta...');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(data => {
+        //             console.log(data);
+        //             data.data.forEach(e => {
+
+        //             });
+
+
+        //         })
+        //         .catch(error => console.error('Error:', error));
+        // }
     });
 </script>
 @endsection

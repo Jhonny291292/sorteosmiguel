@@ -12,7 +12,14 @@ class RifaController extends Controller
      */
     public function index()
     {
-        //
+        $data = Pago::select('numero', 'cliente_id')
+            ->distinct() // Seleccionar números únicos
+            ->with('cliente') // Cargar la relación del cliente
+            ->get();
+        return response()->json([
+            'status' => 'ok',
+            'data' => $data
+        ], 200);
     }
 
     /**

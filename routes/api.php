@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\PagoController;
+use App\Http\Controllers\RifaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,4 +33,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::apiResource('/estructuras', estructurasController::class);
 Route::apiResource('/clientes', ClienteController::class);
 Route::apiResource('/pagos', PagoController::class);
+Route::apiResource('/rifas', RifaController::class);
 Route::apiResource('/user', UserController::class);
