@@ -11,7 +11,7 @@ Rifas
 @endsection
 
 @section('modals')
-<!-- Modal Create Cliente -->
+<!-- Modal para comprar numero de rifa -->
 <div class="modal fade" id="modal-rifa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
@@ -55,6 +55,46 @@ Rifas
         </div>
     </div>
 </div>
+<!-- Modal para ver datos del numero de rifa o liberar en caso de no pagar -->
+<div class="modal fade" id="modal-liberar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark" id="modal-title"><b>Número de Rifa</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&minus;</span>
+                </button>
+            </div>
+            <form autocomplete="off">
+                @csrf
+                <div class="modal-body">
+                    <div class="text-center" id="number-comprado">
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="text-dark ps-1 pt-2 cliente"><b>Proveedor: </b> {supplier_name} <b>RIF: </b> {supplier_rif}</p>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="text-dark ps-1 pt-2 direccion"><b>Dirección: </b> {supplier_address}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="text-dark ps-1 pt-2 telefono"><b>Teléfono: </b> {supplier_tlf}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="text-dark ps-1 pt-2 correo"><b>Correo: </b> {supplier_authorized}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger" id="btn-submit">
+                        ¿Quiere liberar este número? 
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @endsection
 
@@ -90,6 +130,7 @@ Rifas
 @section('scripts')
 <script>
 $(document).ready(function() {
+    const PrecioRifa = 5;
     //Initialize Select2 Elements
     $('.select2').select2({
       dropdownParent: $('#modal-rifa .modal-body'),
@@ -104,68 +145,21 @@ $(document).ready(function() {
             }
         }
     })
-    // let numeros = [];
-    // let secciones = [];
-    // let numeros_comprados = [];
-    // // funcion para armar tabla de numeros
-    // function tablaNumeros(){
-    //     let template = '';
-    //     // Generar números del 0 al 999
-    //     for (let i = 0; i < 1000; i++) {
-    //         numeros.push(i);
-    //     }
-    //     // Agrupar en secciones de 100
-    //     for (let i = 0; i < numeros.length; i += 100) {
-    //         secciones.push(numeros.slice(i, i + 100));
-    //     }
-
-    //     fetch('api/rifas', {
-    //                 method: 'GET',
-    //                 headers: {
-    //                     'Content-Type': 'application/json'
-    //                 }
-    //             })
-    //     .then(response => {
-    //         if (!response.ok) {
-    //             throw new Error('Error en la consulta...');
-    //         }
-    //             return response.json();
-    //     })
-    //     .then(data => {
-    //         //console.log(data);
-    //         data.data.forEach(e => {
-    //           //console.log(e);
-    //           numeros_comprados.push(e.numero);
-    //         });
-           
-    //         console.log(numeros_comprados);
-
-    //         // Iterar sobre cada sección
-    //         secciones.forEach(section => {
-    //             // Agrupar en filas de 10
-    //             for (let i = 0; i < section.length; i += 10) {
-    //                 template += '<tr class="text-center">';
-    //                     for (let j = i; j < i + 10 && j < section.length; j++) {
-    //                         const numeroFormateado = section[j].toString().padStart(3, '0');
-    //                         template += `<td>
-    //                                 <button type="button" class="btn btn-lg btn-light border modalNumber" data-number="${section[j]}" data-numberF="${numeroFormateado}">${numeroFormateado}</button>
-    //                             </td>`;
-    //                     }
-    //                 template += '</tr>';
-    //             }
-    //         });
-    //         $('tbody').html(template);
-
-
-    //     })
-    //     .catch(error => console.error('Error:', error));
-    // }
-    function tablaNumeros() {
-    let template = '';
-    let numeros = [];
-    let secciones = [];
-    let numeros_comprados = [];
-
+    let personas = [
+        cliente_id='',
+        cliente_ci='',
+        cliente_nombre='',
+        cliente_direccion='',
+        cliente_telefono='',
+        cliente_email='',
+    ];
+//Funcion para mostrar la tabla de numeros
+function tablaNumeros() {
+    let template = '',
+        numeros = [],
+        secciones = [],
+        numeros_comprados = [],
+        montosPorNumero= {};
     // Generar números del 0 al 999
     for (let i = 0; i < 1000; i++) {
         numeros.push(i);
@@ -191,8 +185,31 @@ $(document).ready(function() {
     .then(data => {
         // Almacenar los números comprados en la variable
         data.data.forEach(e => {
+            const numero = e.numero;
+            const monto = parseFloat(e.monto);
+
+            // Si el número ya existe en el objeto, sumamos el monto
+            if (montosPorNumero[numero]) {
+                montosPorNumero[numero] += monto;
+            } else {
+            // Si no existe, lo inicializamos con el monto actual
+                montosPorNumero[numero] = monto;
+            }
             numeros_comprados.push(e.numero);
+            console.log(e.cliente.nombre);
+            personas = [
+                cliente_nombre=e.cliente.nombre,
+            ]
+            
+            
         });
+        
+        // Convertimos los montos a dos decimales
+        // for (let numero in montosPorNumero) {
+        //     montosPorNumero[numero] = montosPorNumero[numero].toFixed(2);
+        // }
+
+        
 
         // Iterar sobre cada sección
         secciones.forEach(section => {
@@ -202,18 +219,18 @@ $(document).ready(function() {
                 for (let j = i; j < i + 10 && j < section.length; j++) {
                     const numero = section[j];
                     const numeroFormateado = numero.toString().padStart(3, '0');
-
+                    console.log(cliente_nombre);
                     // Comprobar si el número está en la lista de comprados
                     const esComprado = numeros_comprados.includes(numero);
-
+                    // Obtener el monto correspondiente al número, o 0 si no existe
+                    const montoT = montosPorNumero[numero] ? parseFloat(montosPorNumero[numero]) : 0;
+                    const claseComprado = montoT < PrecioRifa ? 'btn-warning' : 'btn-info';
                     // Si está comprado, agregar la clase que cambia el color
-                    const claseComprado = esComprado ? 'btn-danger' : 'btn-light';
+                    const btnNumero = esComprado ? `<button type="button" class="btn btn-lg modalLibear border ${claseComprado}" data-clienteId ="${cliente_id}" data-ci ="${cliente_ci}" data-nombre ="${cliente_nombre}" data-direccion ="${cliente_direccion}" data-tlf ="${cliente_telefono}" data-email ="${cliente_email}"  data-number="${numero}" data-numberF="${numeroFormateado}">${numeroFormateado}</button>` : 
+                    `<button type="button" class="btn btn-lg btn-light border modalNumber" data-number="${numero}" data-numberF="${numeroFormateado}">${numeroFormateado}</button>`;
 
-                    template += `<td>
-                        <button type="button" class="btn btn-lg ${claseComprado} border modalNumber" data-number="${numero}" data-numberF="${numeroFormateado}">
-                            ${numeroFormateado}
-                        </button>
-                    </td>`;
+                    template += `<td>${btnNumero}</td>`;
+
                 }
                 template += '</tr>';
             }
@@ -225,17 +242,6 @@ $(document).ready(function() {
     .catch(error => console.error('Error:', error));
 }
     tablaNumeros();
-
-    // var numeros_comprados = [5, 15, 100, 250, 999];
-
-    // // Comparar y mostrar en consola
-    // secciones.forEach((seccion, index) => {
-    //     seccion.forEach(numero => {
-    //         if (numeros_comprados.includes(numero)) {
-    //            // console.log(`El número ${numero} está en la sección ${index + 1}`);
-    //         }
-    //     });
-    // });
 
 // funcion para abrir el modal al hacer click en el numero de la lista
     $(document).on('click', '.modalNumber', function(e){
@@ -329,33 +335,29 @@ $(document).ready(function() {
 
     })
 
+    $(document).on('click', '.modalLibear', function(e){
+        e.preventDefault();
+        let cliente_id = $(this).attr('data-clienteId');
+        let cliente_ci = $(this).attr('data-ci');
+        let cliente_nombre = $(this).attr('data-nombre');
+        let cliente_direccion = $(this).attr('data-direccion');
+        let cliente_telefono = $(this).attr('data-tlf');
+        let cliente_email = $(this).attr('data-email');
+        let numero = $(this).attr('data-number');
+        let numeroF = $(this).attr('data-numberF');
+        $("#number-comprado").html(`<h3 class="text-dark">${numeroF}</h3>`);// Numero que se muestra en la vista del modal
+        $(".cliente").html(`<b>Cliente: </b> ${cliente_nombre} <b>Cedula: </b> ${cliente_ci}`)
+        // $("#number").val(numero)
+        // $("#cedula").val(cliente_ci);
+        // $("#nombre").val(cliente_nombre);
+        // $("#direccion").val(cliente_direccion);
+        // $("#telefono").val(cliente_telefono);
+        // $("#email").val(cliente_email);
+        $('#modal-liberar').modal('show'); //Abre el modal 
+    })
 
 
-        // ConsultarNummeros();
 
-        // function ConsultarNummeros() {
-        //     fetch('api/rifas', {
-        //             method: 'GET',
-        //             headers: {
-        //                 'Content-Type': 'application/json'
-        //             }
-        //         })
-        //         .then(response => {
-        //             if (!response.ok) {
-        //                 throw new Error('Error en la consulta...');
-        //             }
-        //             return response.json();
-        //         })
-        //         .then(data => {
-        //             console.log(data);
-        //             data.data.forEach(e => {
-
-        //             });
-
-
-        //         })
-        //         .catch(error => console.error('Error:', error));
-        // }
 });
 </script>
 @endsection
