@@ -70,12 +70,12 @@
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item active">
+            {{-- <li class="nav-item active">
                 <a class="nav-link" href="{{route('pagos.list')}}">
                     <i class="fas fa-fw fa-suitcase"></i>
                     Pagos
                 </a>
-            </li>
+            </li> --}}
 
             @if(auth()->user()->rol == "S.Administrador")
                 <li class="nav-item active">
