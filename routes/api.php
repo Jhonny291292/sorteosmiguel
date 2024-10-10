@@ -35,3 +35,6 @@ Route::apiResource('/clientes', ClienteController::class);
 Route::apiResource('/pagos', PagoController::class);
 Route::apiResource('/rifas', RifaController::class);
 Route::apiResource('/user', UserController::class);
+
+// Ruta personalizada para obtener todos los numeros que estan en la tabla pagos
+Route::get('/pagos/todos', [PagoController::class, 'numerosPagados']);
