@@ -43,7 +43,15 @@ class RifaController extends Controller
      */
     public function show(string $id)
     {
-        //
+            // Agrupar por 'numero' y sumar el 'monto', incluyendo las relaciones de cliente y usuario
+                $data = Pago::with(['cliente', 'user'])
+                ->orderBy('numero', 'asc')
+                ->get();
+    
+            return response()->json([
+                'status' => true,
+                'data' => $data
+            ]);
     }
 
     /**
