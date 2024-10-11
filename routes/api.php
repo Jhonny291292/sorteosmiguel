@@ -38,3 +38,5 @@ Route::apiResource('/user', UserController::class);
 
 // Ruta personalizada para obtener todos los numeros que estan en la tabla pagos
 Route::get('/pagos/todos', [PagoController::class, 'numerosPagados']);
+Route::get('rifas/{cliente_id}/{numero}', [RifaController::class, 'show']);
+Route::delete('rifas/{cliente_id}/{numero}', [RifaController::class, 'destroy']);

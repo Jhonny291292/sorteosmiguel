@@ -49,11 +49,16 @@ class PagoController extends Controller
     {
         $cliente = Cliente::where('cedula', $request->cedula)->first();
 
+        $monto = $request->monto;
+        if ($monto == null || $monto == '') {
+            $monto = 0;
+        } 
+
         $data = Pago::create([
             'cliente_id' => $cliente->id,
             'numero' => $request->number,
             'user_id' => $request->user_id,
-            'monto' => $request->monto
+            'monto' => $monto
         ]);
         return response()->json([
             'status' => 'ok',
