@@ -41,7 +41,7 @@ Rifas
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><b>Monto $</b></span>
                                 </div>
-                                <input type="text" class="form-control text-right" id="monto" name="monto">
+                                <input type="number" step="0.01" class="form-control text-right" id="monto" name="monto">
                             </div>
                         </div>
                     </div>
@@ -65,33 +65,70 @@ Rifas
                     <span aria-hidden="true">&minus;</span>
                 </button>
             </div>
-            <form autocomplete="off">
-                @csrf
+
                 <div class="modal-body">
                     <div class="text-center" id="number-comprado">
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-md-12">
-                            <p class="text-dark ps-1 pt-2 cliente"><b>Proveedor: </b> {supplier_name} <b>RIF: </b> {supplier_rif}</p>
+                        <div class="col-md-12 text-center">
+                            <p class="text-dark ps-1 vendedor"></p>
                         </div>
                         <div class="col-md-12">
-                            <p class="text-dark ps-1 pt-2 direccion"><b>Dirección: </b> {supplier_address}</p>
+                            <p class="text-dark ps-1 cliente"></p>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="text-dark ps-1 direccion"></p>
                         </div>
                         <div class="col-md-6">
-                            <p class="text-dark ps-1 pt-2 telefono"><b>Teléfono: </b> {supplier_tlf}</p>
+                            <p class="text-dark ps-1 telefono"></p>
                         </div>
                         <div class="col-md-6">
-                            <p class="text-dark ps-1 pt-2 correo"><b>Correo: </b> {supplier_authorized}</p>
+                            <p class="text-dark ps-1 correo"></p>
                         </div>
                     </div>
+                    <div class="row">
+                        <form id="form-abono" class="form-inline" autocomplete="off">
+                                @csrf
+                                <input type="hidden" id="user_id_abono" name="user_id" value="{{auth()->user()->id}}">
+                                <input type="hidden" id="number_abono" name="number">
+                                <input type="hidden" id="id_cliente" name="id_cliente">
+                                <input type="hidden" id="cedula_abono" name="cedula">
+                                <div class="form-group mx-2 mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><b>Monto $</b></span>
+                                        </div>
+                                        <input type="number" step="0.01" class="form-control text-right" id="abono" name="monto">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-success mb-2">
+                                    Abonar
+                                </button>
+                        </form>
+                    </div>
+                    <hr>
+                    <div class="text-center mb-2"><b>Pagos del Número</b></div>
+                    <div class="table-responsive p-0" style="height: 120px;">
+                        <table class="table table-bordered table-head-fixed table-sm text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Fecha de Pago</th>
+                                    <th class="text-center">Monto Pagado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-pagos">
+                            </tbody>
+                        </table>
+                    </div>
+
+
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger" id="btn-submit">
+                    <button type="button" class="btn btn-danger" id="btn-liberar">
                         ¿Quiere liberar este número?
                     </button>
                 </div>
-            </form>
         </div>
     </div>
 </div>
@@ -201,11 +238,6 @@ Rifas
 
                         datos_clientes.push(e.cliente);
                         datos_vendedores.push(e.user);
-                        // console.log(e);
-                        // personas = [
-                        //     cliente_nombre=e.cliente.nombre,
-                        // ]
-
 
                     });
 
@@ -235,7 +267,7 @@ Rifas
                                 const montoT = montosPorNumero[numero] ? parseFloat(montosPorNumero[numero]) : 0;
                                 const claseComprado = montoT < PrecioRifa ? 'btn-warning' : 'btn-info';
                                 // Si está comprado, agregar la clase que cambia el color
-                                const btnNumero = esComprado != -1 ? `<button type="button" class="btn btn-lg modalLibear border ${claseComprado}" data-clienteId ="${datos_clientes[esComprado].id}" data-ci ="${datos_clientes[esComprado].cedula}" data-nombre ="${datos_clientes[esComprado].nombre}" data-direccion ="${datos_clientes[esComprado].direccion}" data-tlf ="${datos_clientes[esComprado].telefono}" data-email ="${datos_clientes[esComprado].email}"  data-number="${numero}" data-numberF="${numeroFormateado}">${numeroFormateado}</button>` :
+                                const btnNumero = esComprado != -1 ? `<button type="button" class="btn btn-lg modalLibear border ${claseComprado}" data-montoT="${montoT}" data-vendedor="${datos_vendedores[esComprado].name}" data-clienteId ="${datos_clientes[esComprado].id}" data-ci ="${datos_clientes[esComprado].cedula}" data-nombre ="${datos_clientes[esComprado].nombre}" data-direccion ="${datos_clientes[esComprado].direccion}" data-tlf ="${datos_clientes[esComprado].telefono}" data-email ="${datos_clientes[esComprado].email}"  data-number="${numero}" data-numberF="${numeroFormateado}">${numeroFormateado}</button>` :
                                     `<button type="button" class="btn btn-lg btn-light border modalNumber" data-number="${numero}" data-numberF="${numeroFormateado}">${numeroFormateado}</button>`;
 
                                 template += `<td>${btnNumero}</td>`;
@@ -289,7 +321,7 @@ Rifas
                 .catch(error => console.error('Error:', error));
         }
         // Funcion para agregar Numero a la lista de pagos
-        $(document).on('submit', '#form-add', function(e) {
+        $(document).on('submit', '#form-add, #form-abono', function(e) {
             e.preventDefault();
             let form = new FormData(this);
             form.delete('_method');
@@ -310,8 +342,10 @@ Rifas
                         )
                         //console.log(data);
                         $('#form-add').trigger('reset');
+                        $('#form-abono').trigger('reset');
                         tablaNumeros();
                         $('#modal-rifa').modal('hide');
+                        $('#modal-liberar').modal('hide');
                     }
                     if (!data.status) {
 
@@ -346,6 +380,7 @@ Rifas
 
         $(document).on('click', '.modalLibear', function(e) {
             e.preventDefault();
+            let vendedor = $(this).attr('data-vendedor');
             let cliente_id = $(this).attr('data-clienteId');
             let cliente_ci = $(this).attr('data-ci');
             let cliente_nombre = $(this).attr('data-nombre');
@@ -354,16 +389,132 @@ Rifas
             let cliente_email = $(this).attr('data-email');
             let numero = $(this).attr('data-number');
             let numeroF = $(this).attr('data-numberF');
+            let TotalPagado = $(this).attr('data-montoT');
             $("#number-comprado").html(`<h3 class="text-dark">${numeroF}</h3>`); // Numero que se muestra en la vista del modal
-            $(".cliente").html(`<b>Cliente: </b> ${cliente_nombre} <b>Cedula: </b> ${cliente_ci}`)
-            // $("#number").val(numero)
-            // $("#cedula").val(cliente_ci);
-            // $("#nombre").val(cliente_nombre);
-            $(".direccion").html(`<b>Dirección: </b> ${cliente_direccion}</p>`);
-            // $("#telefono").val(cliente_telefono);
-            // $("#email").val(cliente_email);
+            $(".vendedor").html(`<b>Vendido por: </b>${vendedor}`);
+            $(".cliente").html(`<b>Cliente: </b> ${cliente_nombre} <b class="ml-2">Cedula: </b> ${cliente_ci}`)
+            $(".direccion").html(`<b>Dirección: </b> ${cliente_direccion}`);
+            $(".telefono").html(`<b>Teléfono: </b> ${cliente_telefono}`);
+            $(".correo").html(`<b>Correo: </b> ${cliente_email}`);
+            $("#number_abono").val(numero);
+            $("#id_cliente").val(cliente_id);
+            $("#cedula_abono").val(cliente_ci);
+            if (TotalPagado < PrecioRifa) {
+                $('#form-abono').show(); 
+            }else{
+                $('#form-abono').hide();
+            }
             $('#modal-liberar').modal('show'); //Abre el modal 
+
+            showPagos(cliente_id, numero);
+
         })
+
+        function showPagos(cliente_id, numero) {
+            //console.log(numero);
+
+            fetch(
+                `api/rifas/${cliente_id}/${numero}`, {
+                    method: 'GET'
+                }
+            ).then(res => res.json())
+            .then(function(data) {
+                if (data.status) {
+                    var num = 1;
+                    var template2 = "";
+                    data.data.forEach(e => {
+                        console.log(e);
+                        var formattedDate = moment(e.fecha).format('DD/MM/YYYY'); // Cambia el formato según tus necesidades
+                        console.log(formattedDate);
+                        template2 += `
+                            <tr>
+                                <td class="text-center"> ${formattedDate}</td>
+                                <td class="text-center"> ${e.monto} $</td>
+                            </tr>
+                        `;
+                    });
+                    $('#tbody-pagos').html(template2);
+                }
+            }).catch(function(err) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err
+                })
+            })
+             
+        }
+
+        $(document).on('click', '#btn-liberar', function(e) {
+            e.preventDefault();
+            let cliente_id =$("#id_cliente").val();
+            let numero =$("#number_abono").val();
+            console.log('el ID del Cliente: '+cliente_id + 'Numero: '+ numero);
+
+            Swal.fire({
+            title: '¿Estás seguro(a) de liberar este número?',
+            text: "Ten en cuenta que la información que será eliminada es irrecuperable.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, eliminar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let timerInterval;
+                    Swal.fire({
+                        title: 'Procesando...',
+                        html: 'La ventana se cerrará en <b></b> milisegundos.',
+                        timer: 30000,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading()
+                            const b = Swal.getHtmlContainer().querySelector('b')
+                            timerInterval = setInterval(() => {
+                                b.textContent = Swal.getTimerLeft()
+                            }, 100)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        }
+                    }).then((result) => {
+                        /* Read more about handling dismissals below */
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            // console.log('I was closed by the timer')
+                        }
+                    })
+
+                    fetch(
+                        `api/rifas/${cliente_id}/${numero}`, {
+                                method: 'DELETE'
+                            }
+                        ).then(res => res.json())
+                        .then(function(data) {
+                            //console.log(data);
+                            if (data.status) {
+                                Swal.fire(
+                                    '¡Perfecto!',
+                                    data.message,
+                                    'success'
+                                )
+                                $('#form-add').trigger('reset');
+                                $('#form-abono').trigger('reset');
+                                tablaNumeros();
+                                $('#modal-rifa').modal('hide');
+                                $('#modal-liberar').modal('hide');
+                            }
+                        }).catch(function(err) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: err
+                            })
+                        })
+                }
+            });
+
+        });
 
 
 

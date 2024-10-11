@@ -42,17 +42,18 @@ class RifaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $cliente_id, string $numero)
     {
-            // Agrupar por 'numero' y sumar el 'monto', incluyendo las relaciones de cliente y usuario
-                $data = Pago::with(['cliente', 'user'])
-                ->orderBy('numero', 'asc')
-                ->get();
-    
-            return response()->json([
-                'status' => true,
-                'data' => $data
-            ]);
+        // // Agrupar por 'numero' y sumar el 'monto', incluyendo las relaciones de cliente y usuario
+        $data = Pago::where("cliente_id", $cliente_id)
+            ->where("numero", $numero)
+            ->orderBy('numero', 'asc')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $data
+        ]);
     }
 
     /**
@@ -74,9 +75,16 @@ class RifaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $cliente_id, string $numero)
     {
-        //
+        $data = Pago::where('cliente_id', $cliente_id)
+                    ->where('numero', $numero)
+                    ->delete();
+        return response()->json([
+            'status' => 'ok',
+            'message' => "data eliminada con éxito"
+        ], 200);
+
     }
     public function list()
     {
