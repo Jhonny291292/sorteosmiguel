@@ -16,7 +16,6 @@ Usuarios
                 </button>
             </div>
             <form id="form-add">
-                {{-- Formulario --}}
                 <div class="modal-body">
                     @csrf
                     <div class="row">
@@ -60,9 +59,38 @@ Usuarios
                         <i class="fas fa-check"></i> Agregar
                     </button>
                 </div>
-                {{-- Fin Formulario
-                <hr> --}}
+                <hr> 
             </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-ventas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title">Información del Vendedor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&minus;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <p id="datos-vendedor"></p>
+                    
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped" id="tabla-detalle">
+                        <thead class="text-center">
+                            <th>Número</th>
+                            <th>Cliente</th>
+                            <th>Total Pagado ($)</th>
+                        </thead>
+                        <tbody id="tbody-detalle"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+            <hr>
         </div>
     </div>
 </div>
@@ -103,25 +131,25 @@ Usuarios
 
 @section('scripts')
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         var id_user_gl = "";
         consultarUsuarios();
 
         // Enviar formulario de registro
-        $(document).on('submit', '#form-add', function (e) {
+        $(document).on('submit', '#form-add', function(e) {
             e.preventDefault();
             let form = new FormData(this);
             form.delete('_method');
 
             fetch('api/user', {
-                method: 'POST',
-                body: form,
-                headers: {
-                    // 'Authorization': 'Bearer ' + token, 
-                }
-            })
+                    method: 'POST',
+                    body: form,
+                    headers: {
+                        // 'Authorization': 'Bearer ' + token, 
+                    }
+                })
                 .then(res => res.json())
-                .then(function (data) {
+                .then(function(data) {
                     if (data.status) {
                         Swal.fire(
                             '¡Perfecto!',
@@ -141,7 +169,7 @@ Usuarios
                             template += "<li class='text-left text-danger'>" + data.mjs + "</li>";
                         } else {
 
-                            $.each(data.errors, function (key, value) {
+                            $.each(data.errors, function(key, value) {
                                 template += "<li class='text-left text-danger'>" + value + "</li>";
                             });
 
@@ -162,19 +190,19 @@ Usuarios
 
         })
 
-        $(document).on('submit', '#form-edit', function (e) {
+        $(document).on('submit', '#form-edit', function(e) {
             e.preventDefault();
-            
+
             let form = new FormData(this);
             form.append('_method', 'PUT');
 
             fetch('api/user/' + id_user_gl, {
-                method: 'POST',
-                body: form,
-                headers: {
-                    // 'Authorization': 'Bearer ' + token, 
-                }
-            })
+                    method: 'POST',
+                    body: form,
+                    headers: {
+                        // 'Authorization': 'Bearer ' + token, 
+                    }
+                })
                 .then(res => res.json())
                 .then(data => {
                     if (data.status) {
@@ -201,7 +229,7 @@ Usuarios
                             template += "<li class='text-left text-danger'>" + data.mjs + "</li>";
                         } else {
 
-                            $.each(data.errors, function (key, value) {
+                            $.each(data.errors, function(key, value) {
                                 template += "<li class='text-left text-danger'>" + value + "</li>";
                             });
 
@@ -222,7 +250,7 @@ Usuarios
 
         })
 
-        $(document).on("click", "#btnAdd", function () {
+        $(document).on("click", "#btnAdd", function() {
             $('#form-edit').trigger('reset');
             $('#form-add').trigger('reset');
             $('#form-edit').attr('id', 'form-add');
@@ -232,7 +260,7 @@ Usuarios
             $("#btn-submit").show();
         })
 
-        $(document).on("click", ".edit", function () {
+        $(document).on("click", ".edit", function() {
             $('#form-edit').trigger('reset');
             $('#form-add').trigger('reset');
             $('#form-add').attr('id', 'form-edit');
@@ -245,19 +273,21 @@ Usuarios
 
         })
 
-        $(document).on("click", ".detalle", function () {
-            $('#form-edit').trigger('reset');
-            $('#form-add').trigger('reset');
-            $('#form-add *').prop('disabled', true);
-            $('#form-edit *').prop('disabled', true);
-            $("#btn-submit").hide();
-
+        $(document).on("click", ".detalle_ventas", function() {
+            // $('#form-edit').trigger('reset');
+            // $('#form-add').trigger('reset');
+            // $('#form-add *').prop('disabled', true);
+            // $('#form-edit *').prop('disabled', true);
+            // $("#btn-submit").hide();
+  
+            var user_nombre =  $(this).attr('data-nombre');
             var id_user = $(this).attr('data-id');
-            showDatosOrg(id_user);
+            $("#datos-vendedor").html( "<strong>Números vendidos por "+ user_nombre+ " </strong>")
+            verVentasUser(id_user);
         })
 
 
-        $(document).on("click", ".del", function () {
+        $(document).on("click", ".del", function() {
             var id_user = $(this).attr('data-id');
 
             Swal.fire({
@@ -295,11 +325,11 @@ Usuarios
                     })
 
                     fetch(
-                        'api/user/' + id_user, {
-                        method: 'DELETE'
-                    }
-                    ).then(res => res.json())
-                        .then(function (data) {
+                            'api/user/' + id_user, {
+                                method: 'DELETE'
+                            }
+                        ).then(res => res.json())
+                        .then(function(data) {
                             if (data.status) {
                                 Swal.fire(
                                     '¡Perfecto!',
@@ -310,7 +340,7 @@ Usuarios
                                 //actualizamos la lista
                                 consultarUsuarios();
                             }
-                        }).catch(function (err) {
+                        }).catch(function(err) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
@@ -324,11 +354,11 @@ Usuarios
         function consultarUsuarios() {
 
             fetch('api/user', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error en la consulta...');
@@ -347,7 +377,7 @@ Usuarios
                                 <td class="text-center"> ${e.email}</td>
                                 <td class="text-center"> ${e.rol}</td>
                                 <td class="d-flex justify-content-center"> 
-                                    <button type="button" class="detalle btn btn-success" data-id="${e.id}" data-toggle="modal" data-target="#modal-organismo">
+                                    <button type="button" class="detalle_ventas btn btn-success" data-id="${e.id}" data-nombre="${e.name}" data-toggle="modal" data-target="#modal-ventas">
                                       <i class="fas fa-info-circle"></i>
                                     </button>
                                     <button type="button" class="edit btn btn-warning" data-id="${e.id}" data-toggle="modal" data-target="#modal-organismo">
@@ -378,11 +408,11 @@ Usuarios
         function showDatosOrg(id_user) {
             id_user_gl = id_user
             fetch(
-                'api/user/' + id_user, {
-                method: 'GET'
-            }
-            ).then(res => res.json())
-                .then(function (data) {
+                    'api/user/' + id_user, {
+                        method: 'GET'
+                    }
+                ).then(res => res.json())
+                .then(function(data) {
                     if (data.status) {
                         data.data.forEach(e => {
 
@@ -392,7 +422,44 @@ Usuarios
 
                         });
                     }
-                }).catch(function (err) {
+                }).catch(function(err) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: err
+                    })
+                })
+        }
+
+        function verVentasUser(id_user) {
+            fetch(
+                    'api/user/' + id_user, {
+                        method: 'GET'
+                    }
+                ).then(res => res.json())
+                .then(function(data) {
+                    console.log(data);
+                    var template = "";
+                    if (data.status) {
+                        data.data.forEach(e => {
+                            template += `
+                            <tr>
+                                <td class="text-center"> ${e.numero}</td>
+                                <td class="text-center"> ${e.cliente.nombre}</td>
+                                <td class="text-center"> ${e.total_pagado}</td>
+                            </tr>
+                        `;
+                        });
+                    }
+                    $('#tabla-detalle').DataTable().destroy();
+
+                    $('#tbody-detalle').html(template);
+
+                    $("#tabla-detalle").DataTable({
+                        language: translate,
+                        responsive: true
+                    });
+                }).catch(function(err) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',

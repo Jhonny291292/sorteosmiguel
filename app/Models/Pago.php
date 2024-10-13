@@ -17,7 +17,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $numero
  * @property int|null $user_id
  * @property string|null $monto
- * @property Carbon|null $fecha
+ * @property Carbon $fecha
+ * @property string|null $estatus
  * 
  * @property Cliente|null $cliente
  * @property User|null $user
@@ -41,7 +42,8 @@ class Pago extends Model
 		'numero',
 		'user_id',
 		'monto',
-		'fecha'
+		'fecha',
+		'estatus'
 	];
 
 	public function cliente()

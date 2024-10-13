@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Emergencias</title>
+    <title>Rifa Rub&Maik</title>
 
 
     <link

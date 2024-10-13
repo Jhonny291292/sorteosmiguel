@@ -12,7 +12,8 @@ class RifaController extends Controller
      */
     public function index()
     {
-        $data = Pago::select('numero', 'cliente_id', 'monto','user_id')
+        $data = Pago::select('numero', 'cliente_id', 'monto', 'user_id')
+            ->where('estatus', 'comprado')
             ->distinct() // Seleccionar números únicos
             ->with('cliente') // Cargar la relación del cliente
             ->with('user')
@@ -47,6 +48,7 @@ class RifaController extends Controller
         // // Agrupar por 'numero' y sumar el 'monto', incluyendo las relaciones de cliente y usuario
         $data = Pago::where("cliente_id", $cliente_id)
             ->where("numero", $numero)
+            ->where("estatus", 'comprado')
             ->orderBy('numero', 'asc')
             ->get();
 
@@ -78,13 +80,14 @@ class RifaController extends Controller
     public function destroy(string $cliente_id, string $numero)
     {
         $data = Pago::where('cliente_id', $cliente_id)
-                    ->where('numero', $numero)
-                    ->delete();
+            ->where('numero', $numero)
+            ->update(['estatus' => 'liberado']);
+        // ->delete();
         return response()->json([
             'status' => 'ok',
-            'message' => "data eliminada con éxito"
+            'message' => "data eliminada con éxito",
+            'data' => $data
         ], 200);
-
     }
     public function list()
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pago;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -81,7 +82,12 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $data = User::where('id', $id)->get();
+        $data = Pago::with(['cliente', 'user'])
+            ->select('numero', 'cliente_id', 'user_id')
+            ->selectRaw('SUM(monto) as total_pagado')
+            ->groupBy('numero', 'cliente_id', 'user_id')
+            ->where("user_id",$id)
+            ->get();
         if ($data) {
             return response()->json([
                 'status' => 'ok',

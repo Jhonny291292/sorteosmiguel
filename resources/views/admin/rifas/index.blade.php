@@ -59,13 +59,14 @@ Rifas
 <div class="modal fade" id="modal-liberar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-dark" id="modal-title"><b>Número de Rifa</b></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&minus;</span>
-                </button>
-            </div>
 
+            <div id="contenido-imprimir">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark" id="modal-title"><b>Número de Rifa</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&minus;</span>
+                    </button>
+                </div>
                 <div class="modal-body">
                     <div class="text-center" id="number-comprado">
                     </div>
@@ -89,22 +90,22 @@ Rifas
                     </div>
                     <div class="row">
                         <form id="form-abono" class="form-inline" autocomplete="off">
-                                @csrf
-                                <input type="hidden" id="user_id_abono" name="user_id" value="{{auth()->user()->id}}">
-                                <input type="hidden" id="number_abono" name="number">
-                                <input type="hidden" id="id_cliente" name="id_cliente">
-                                <input type="hidden" id="cedula_abono" name="cedula">
-                                <div class="form-group mx-2 mb-2">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><b>Monto $</b></span>
-                                        </div>
-                                        <input type="number" step="0.01" class="form-control text-right" id="abono" name="monto">
+                            @csrf
+                            <input type="hidden" id="user_id_abono" name="user_id" value="{{auth()->user()->id}}">
+                            <input type="hidden" id="number_abono" name="number">
+                            <input type="hidden" id="id_cliente" name="id_cliente">
+                            <input type="hidden" id="cedula_abono" name="cedula">
+                            <div class="form-group mx-2 mb-2">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><b>Monto $</b></span>
                                     </div>
+                                    <input type="number" step="0.01" class="form-control text-right" id="abono" name="monto">
                                 </div>
-                                <button type="submit" class="btn btn-success mb-2">
-                                    Abonar
-                                </button>
+                            </div>
+                            <button type="submit" class="btn btn-success mb-2">
+                                Abonar
+                            </button>
                         </form>
                     </div>
                     <hr>
@@ -121,14 +122,14 @@ Rifas
                             </tbody>
                         </table>
                     </div>
-
-
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" id="btn-liberar">
-                        ¿Quiere liberar este número?
-                    </button>
-                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-success " id="printBtn"> <i class="fas fa-file-pdf"></i> Reporte</button>
+                <button type="button" class="btn btn-danger" id="btn-liberar">
+                    ¿Quiere liberar este número?
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -167,7 +168,7 @@ Rifas
 @section('scripts')
 <script>
     $(document).ready(function() {
-        const PrecioRifa = 5;
+        const PrecioRifa = 10;
         //Initialize Select2 Elements
         $('.select2').select2({
             dropdownParent: $('#modal-rifa .modal-body'),
@@ -400,8 +401,8 @@ Rifas
             $("#id_cliente").val(cliente_id);
             $("#cedula_abono").val(cliente_ci);
             if (TotalPagado < PrecioRifa) {
-                $('#form-abono').show(); 
-            }else{
+                $('#form-abono').show();
+            } else {
                 $('#form-abono').hide();
             }
             $('#modal-liberar').modal('show'); //Abre el modal 
@@ -412,54 +413,54 @@ Rifas
 
         function showPagos(cliente_id, numero) {
             //console.log(numero);
-
+            $("#fila-monto").show();
             fetch(
-                `api/rifas/${cliente_id}/${numero}`, {
-                    method: 'GET'
-                }
-            ).then(res => res.json())
-            .then(function(data) {
-                if (data.status) {
-                    var num = 1;
-                    var template2 = "";
-                    data.data.forEach(e => {
-                        console.log(e);
-                        var formattedDate = moment(e.fecha).format('DD/MM/YYYY'); // Cambia el formato según tus necesidades
-                        console.log(formattedDate);
-                        template2 += `
+                    `api/rifas/${cliente_id}/${numero}`, {
+                        method: 'GET'
+                    }
+                ).then(res => res.json())
+                .then(function(data) {
+                    if (data.status) {
+                        var num = 1;
+                        var template2 = "";
+                        data.data.forEach(e => {
+                            // console.log(e);
+                            var formattedDate = moment(e.fecha).format('DD/MM/YYYY'); // Cambia el formato según tus necesidades
+                            // console.log(formattedDate);
+                            template2 += `
                             <tr>
                                 <td class="text-center"> ${formattedDate}</td>
                                 <td class="text-center"> ${e.monto} $</td>
                             </tr>
                         `;
-                    });
-                    $('#tbody-pagos').html(template2);
-                }
-            }).catch(function(err) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: err
+                        });
+                        $('#tbody-pagos').html(template2);
+                    }
+                }).catch(function(err) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: err
+                    })
                 })
-            })
-             
+
         }
 
         $(document).on('click', '#btn-liberar', function(e) {
             e.preventDefault();
-            let cliente_id =$("#id_cliente").val();
-            let numero =$("#number_abono").val();
-            console.log('el ID del Cliente: '+cliente_id + 'Numero: '+ numero);
+            let cliente_id = $("#id_cliente").val();
+            let numero = $("#number_abono").val();
+            // console.log('el ID del Cliente: ' + cliente_id + 'Numero: ' + numero);
 
             Swal.fire({
-            title: '¿Estás seguro(a) de liberar este número?',
-            text: "Ten en cuenta que la información que será eliminada es irrecuperable.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            cancelButtonText: 'Cancelar',
-            confirmButtonText: 'Si, eliminar'
+                title: '¿Estás seguro(a) de liberar este número?',
+                text: "Ten en cuenta que la información que será eliminada es irrecuperable.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Si, eliminar'
             }).then((result) => {
                 if (result.isConfirmed) {
                     let timerInterval;
@@ -486,12 +487,12 @@ Rifas
                     })
 
                     fetch(
-                        `api/rifas/${cliente_id}/${numero}`, {
+                            `api/rifas/${cliente_id}/${numero}`, {
                                 method: 'DELETE'
                             }
                         ).then(res => res.json())
                         .then(function(data) {
-                            //console.log(data);
+                            console.log(data);
                             if (data.status) {
                                 Swal.fire(
                                     '¡Perfecto!',
@@ -516,7 +517,47 @@ Rifas
 
         });
 
+        document.getElementById('printBtn').onclick = function() {
+            printModalContent();
+        };
 
+        function printModalContent() {
+
+            const modalContent = document.querySelector('#contenido-imprimir').innerHTML;
+
+            // Crear una nueva ventana
+            const printWindow = window.open('', '', 'height=600,width=800');
+
+            // Escribir el contenido en la nueva ventana
+            printWindow.document.write('<html><head><title>Imprimir</title>');
+            printWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">'); // Incluye CSS si es necesario
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(modalContent);
+            printWindow.document.write('</body></html>');
+
+            printWindow.document.close(); // Cierra el documento para que se renderice
+            printWindow.focus(); // Enfoca la ventana
+
+            // Imprimir
+            printWindow.print();
+
+            // Cerrar la ventana después de imprimir
+            printWindow.onafterprint = function() {
+                printWindow.close();
+            };
+
+            // const modalContent = document.querySelector('#contenido-imprimir').innerHTML;
+            // const originalContent = document.body.innerHTML;
+
+            // document.body.innerHTML = modalContent;
+
+            // window.print();
+
+            // // Restaurar el contenido original
+            // document.body.innerHTML = originalContent;
+            // Volver a abrir el modal después de imprimir
+            // document.getElementById('modal-liberar').style.display = 'block';
+        }
 
     });
 </script>
