@@ -18,9 +18,12 @@ class RifaController extends Controller
             ->with('cliente') // Cargar la relación del cliente
             ->with('user')
             ->get();
+
+            $totalMontosVendidos = Pago::sum('monto');
         return response()->json([
             'status' => 'ok',
-            'data' => $data
+            'data' => $data,
+            'totalMontosVendidos' => $totalMontosVendidos
         ], 200);
     }
 

@@ -142,7 +142,11 @@ Rifas
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title text-dark"> <i class="fa fa-th"></i> <b>Rifa</b></h5>
+                <div class="clearfix">
+                    <h5 class="card-title text-dark float-left"> <i class="fa fa-th"></i> <b>Rifa</b></h5>
+                    <button type="button" class="btn btn-secondary float-right ml-sm-0 ml-md-2 mb-2">Total Ventas</button>
+                    <button type="button" class="btn btn-secondary float-right">Números Faltantes</button>
+                </div>
             </div>
             <!-- /.card-header -->
             <div class="card-body table-responsive p-0" style="height: 500px;">
@@ -192,6 +196,8 @@ Rifas
             cliente_email = '',
         ];
         //Funcion para mostrar la tabla de numeros
+        // hacer el reporte de los numeros que faltan por comprar: debo usar el bucle que estou usando para pintar los numeros para que me llene una variable con los que no estan pintados
+        // hacer reporte del total de ventas de la rifa: debo hacer una funcion que consulte los montos de todos los numeros que tengan estado comprado y me sume el total
         function tablaNumeros() {
             let template = '',
                 numeros = [],
@@ -199,7 +205,8 @@ Rifas
                 numeros_comprados = [],
                 montosPorNumero = {},
                 datos_clientes = [],
-                datos_vendedores = [];
+                datos_vendedores = [],
+                totalMontosVendidos = 0;
             // Generar números del 0 al 999
             for (let i = 0; i < 1000; i++) {
                 numeros.push(i);
@@ -228,6 +235,9 @@ Rifas
                         const numero = e.numero;
                         const monto = parseFloat(e.monto);
 
+                        // Sumar el monto a la variable totalMontosVendidos
+                        totalMontosVendidos = data.totalMontosVendidos;
+                       
                         // Si el número ya existe en el objeto, sumamos el monto
                         if (montosPorNumero[numero]) {
                             montosPorNumero[numero] += monto;
@@ -242,6 +252,10 @@ Rifas
 
                     });
 
+                    // Crear una lista de números no comprados
+                    const numeros_no_comprados = numeros.filter(num => !numeros_comprados.includes(num));
+                    //console.log('Números no comprados:', numeros_no_comprados);
+                    console.log(totalMontosVendidos);
                     // console.log(datos_clientes);
                     // Convertimos los montos a dos decimales
                     // for (let numero in montosPorNumero) {
