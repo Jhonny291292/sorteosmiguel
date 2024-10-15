@@ -360,7 +360,7 @@ Rifas
 
         // funcion para abrir el modal al hacer click en el numero de la lista
         $(document).on('click', '.modalNumber', function(e) {
-            e.preventDefault();
+            e.preventDefault();            
             let numero = $(this).attr('data-number'); //numero que utilizare en la consulta
             let numeroF = $(this).attr('data-numberF'); //numero fromateado que uso en la vista del modal
             $("#number-rifa").html(`<h3 class="text-dark">${numeroF}</h3>`); // Numero que se muestra en la vista del modal
@@ -475,8 +475,10 @@ Rifas
             $("#cedula_abono").val(cliente_ci);
             if (TotalPagado < PrecioRifa) {
                 $('#form-abono').show();
+                $("#printBtn").hide();
             } else {
                 $('#form-abono').hide();
+                $("#printBtn").show();
             }
             $('#modal-liberar').modal('show'); //Abre el modal 
 

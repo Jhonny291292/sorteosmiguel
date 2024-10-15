@@ -82,11 +82,20 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
+        // $data = Pago::with(['cliente', 'user'])
+        //     ->select('numero', 'cliente_id', 'user_id')
+        //     ->selectRaw('SUM(monto) as total_pagado')
+        //     ->groupBy('numero', 'cliente_id', 'user_id')
+        //     ->where("user_id",$id)
+        //     ->get();
+
         $data = Pago::with(['cliente', 'user'])
             ->select('numero', 'cliente_id', 'user_id')
             ->selectRaw('SUM(monto) as total_pagado')
+            ->selectRaw('MAX(fecha) as fecha') // Trae la fecha más reciente
+            ->selectRaw('MAX(estatus) as estatus') // Trae el estatus más reciente
             ->groupBy('numero', 'cliente_id', 'user_id')
-            ->where("user_id",$id)
+            ->where("user_id", $id)
             ->get();
         if ($data) {
             return response()->json([
