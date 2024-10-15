@@ -110,7 +110,7 @@ Rifas
                     </div>
                     <hr>
                     <div class="text-center mb-2"><b>Pagos del Número</b></div>
-                    <div class="table-responsive p-0" style="height: 120px;">
+                    <div class="table-responsive p-0" {{--style="height: 120px;"--}}>
                         <table class="table table-bordered table-head-fixed table-sm text-nowrap">
                             <thead>
                                 <tr>
@@ -134,6 +134,61 @@ Rifas
     </div>
 </div>
 
+<!--Modal de lista de numeros faltantes por vender-->
+<div class="modal fade" id="modal-numerosFaltantes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark"><b>Números por vender</b></h5>
+                {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&minus;</span>
+                </button> --}}
+                <button type="button" class="btn btn-secondary " id="printBtn2"> <i class="fas fa-file-pdf"></i> Imprimir Reporte</button>
+            </div>
+            <div id="contenido-imprimir2">
+                <div class="modal-body p-0">
+                    <table class="table table-bordered table-head-fixed table-sm text-nowrap">
+                        <thead>
+                            <tr>
+                                <th class="text-center text-dark faltan" colspan="10"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-faltantes">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal de Ventas-->
+<div class="modal fade" id="modal-ventas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><b>Total de Ventas</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&minus;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <div id="contenido-imprimir3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title text-dark">El total de recaudado, hasta este momento, con la venta de los números de la rifa es de: </h5>
+                            <p class="card-text text-dark h4 totalV"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary " id="printBtn3"> <i class="fas fa-file-pdf"></i> Imprimir Reporte</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('content')
@@ -144,8 +199,8 @@ Rifas
             <div class="card-header">
                 <div class="clearfix">
                     <h5 class="card-title text-dark float-left"> <i class="fa fa-th"></i> <b>Rifa</b></h5>
-                    <button type="button" class="btn btn-secondary float-right ml-sm-0 ml-md-2 mb-2">Total Ventas</button>
-                    <button type="button" class="btn btn-secondary float-right">Números Faltantes</button>
+                    <button type="button" class="btn btn-success float-right ml-sm-0 ml-md-2 mb-2" id="btn-venta">Total en Ventas</button>
+                    <button type="button" class="btn btn-success float-right" id="btn-numerosFaltantes">Números Faltantes</button>
                 </div>
             </div>
             <!-- /.card-header -->
@@ -200,6 +255,7 @@ Rifas
         // hacer reporte del total de ventas de la rifa: debo hacer una funcion que consulte los montos de todos los numeros que tengan estado comprado y me sume el total
         function tablaNumeros() {
             let template = '',
+                template_Faltantes='',
                 numeros = [],
                 secciones = [],
                 numeros_comprados = [],
@@ -234,7 +290,6 @@ Rifas
                     data.data.forEach(e => {
                         const numero = e.numero;
                         const monto = parseFloat(e.monto);
-
                         // Sumar el monto a la variable totalMontosVendidos
                         totalMontosVendidos = data.totalMontosVendidos;
                        
@@ -246,7 +301,6 @@ Rifas
                             montosPorNumero[numero] = monto;
                         }
                         numeros_comprados.push(e.numero);
-
                         datos_clientes.push(e.cliente);
                         datos_vendedores.push(e.user);
 
@@ -254,15 +308,19 @@ Rifas
 
                     // Crear una lista de números no comprados
                     const numeros_no_comprados = numeros.filter(num => !numeros_comprados.includes(num));
-                    //console.log('Números no comprados:', numeros_no_comprados);
-                    console.log(totalMontosVendidos);
-                    // console.log(datos_clientes);
-                    // Convertimos los montos a dos decimales
-                    // for (let numero in montosPorNumero) {
-                    //     montosPorNumero[numero] = montosPorNumero[numero].toFixed(2);
-                    // }
+                    let n = numeros_no_comprados.length;
+                    $(".faltan").html('<h5>Números Faltantes: '+ n+'</h5>');
+                    for (let f = 0; f < numeros_no_comprados.length; f += 10){
+                        template_Faltantes +='<tr class="text-center">';
+                            for (let a = f; a < f + 10 && a < numeros_no_comprados.length; a++){
+                                const faltante = numeros_no_comprados[a]
+                                template_Faltantes += `<td class="text-dark">${faltante}</td>`;
+                            }    
+                        template_Faltantes +='</tr>';  
+                    }   
 
-                    // console.log(datos_vendedores);
+                    //Monto total de ventas
+                    $(".totalV").html('<b>'+totalMontosVendidos+' $</b>')
 
                     // Iterar sobre cada sección
                     secciones.forEach(section => {
@@ -294,6 +352,7 @@ Rifas
 
                     // Insertar el template generado en el cuerpo de la tabla
                     $('tbody').html(template);
+                    $('#tbody-faltantes').html(template_Faltantes);
                 })
                 .catch(error => console.error('Error:', error));
         }
@@ -572,6 +631,74 @@ Rifas
             // Volver a abrir el modal después de imprimir
             // document.getElementById('modal-liberar').style.display = 'block';
         }
+        //Funcion para abrir modal de numeros faltantes  
+        $(document).on('click', '#btn-numerosFaltantes', function() {
+            $("#modal-numerosFaltantes").modal('show');
+        })
+        // metodo para capturar el click del boton de reporte de numeros faltantes  
+        document.getElementById('printBtn2').onclick = function() {
+            printModalContent2();
+        };
+        // funcion print para modal de numeros faltantes
+        function printModalContent2() {
+            const modalContent2 = document.querySelector('#contenido-imprimir2').innerHTML;
+
+            // Crear una nueva ventana
+            const printWindow2 = window.open('', '', 'height=600,width=800');
+
+            // Escribir el contenido en la nueva ventana
+            printWindow2.document.write('<html><head><title>Imprimir</title>');
+            printWindow2.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">'); // Incluye CSS si es necesario
+            printWindow2.document.write('</head><body>');
+            printWindow2.document.write(modalContent2);
+            printWindow2.document.write('</body></html>');
+
+            printWindow2.document.close(); // Cierra el documento para que se renderice
+            printWindow2.focus(); // Enfoca la ventana
+
+            // Imprimir
+            printWindow2.print();
+
+            // Cerrar la ventana después de imprimir
+            printWindow2.onafterprint = function() {
+                printWindow2.close();
+            };
+        }
+
+        //Funcion para abrir modal de total de ventas
+        $(document).on('click', '#btn-venta', function(e) {
+            $("#modal-ventas").modal("show");
+        })
+        // metodo para capturar el click del boton de reporte de total de ventas
+        document.getElementById('printBtn3').onclick = function() {
+            printModalContent3();
+        };
+        // funcion print para modal de ventas
+        function printModalContent3() {
+            const modalContent3 = document.querySelector('#contenido-imprimir3').innerHTML;
+
+            // Crear una nueva ventana
+            const printWindow3 = window.open('', '', 'height=600,width=800');
+
+            // Escribir el contenido en la nueva ventana
+            printWindow3.document.write('<html><head><title>Imprimir</title>');
+            printWindow3.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">'); // Incluye CSS si es necesario
+            printWindow3.document.write('</head><body>');
+            printWindow3.document.write(modalContent3);
+            printWindow3.document.write('</body></html>');
+
+            printWindow3.document.close(); // Cierra el documento para que se renderice
+            printWindow3.focus(); // Enfoca la ventana
+
+            // Imprimir
+            printWindow3.print();
+
+            // Cerrar la ventana después de imprimir
+            printWindow3.onafterprint = function() {
+                printWindow3.close();
+            };
+        }
+
 
     });
 </script>
