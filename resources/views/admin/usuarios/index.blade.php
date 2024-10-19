@@ -470,7 +470,7 @@ Usuarios
                     data.each(function (row) {
                         total += parseFloat(row[2]);
                     });
-                    $("#datos-vendedor").html("<strong>Números vendidos por " + user_nombre + ". </strong> Total Vendido: " + total)
+                    $("#datos-vendedor").html("<strong>Números vendidos por " + user_nombre + ". </strong> Total Vendido: " + total + "($)")
                     // Escucha el evento de redibujo
                     table.on('draw', function () {
 
@@ -482,7 +482,7 @@ Usuarios
                             total += totalPagado; // Suma el valor
 
                         });
-                        $("#datos-vendedor").html("<strong>Números vendidos por " + user_nombre + " </strong> Total Vendido: " + total)
+                        $("#datos-vendedor").html("<strong>Números vendidos por " + user_nombre + " </strong> Total Vendido: " + total + "($)")
                         // $("#total_pagado").text(total)
 
                         // calcularSuma(); // Llama a la función para calcular la suma
