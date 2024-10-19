@@ -338,6 +338,7 @@ small{
 
 @section('content')
 <div class="container">
+	<!-- <img src="{{asset('img/logoRifa.jpeg')}}" alt="..."> -->
 	<div class="screen">
 		<div class="screen__content">
 			<form class="login" method="POST" action="{{ route('login') }}">
