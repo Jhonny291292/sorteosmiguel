@@ -397,7 +397,8 @@ Usuarios
                     });
                     //agregamos los datos a la tabla
                     $('#tabla-usuarios').DataTable().destroy();
-
+                    $('#tabla-detalle').DataTable().destroy();
+                    
                     $('#tbody-usuarios').html(template);
 
                     $("table").DataTable({
