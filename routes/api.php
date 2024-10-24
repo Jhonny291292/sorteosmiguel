@@ -4,6 +4,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\RifaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VentasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,7 @@ Route::apiResource('/clientes', ClienteController::class);
 Route::apiResource('/pagos', PagoController::class);
 Route::apiResource('/rifas', RifaController::class);
 Route::apiResource('/user', UserController::class);
+Route::apiResource('/ventas', VentasController::class);
 
 // Ruta personalizada para obtener todos los numeros que estan en la tabla pagos
 Route::get('/pagos/todos', [PagoController::class, 'numerosPagados']);

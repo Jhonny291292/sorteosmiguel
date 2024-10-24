@@ -50,7 +50,7 @@ Ventas
 
         function verVentasUser(id_user, user_nombre) {
             fetch(
-                'api/user/' + id_user, {
+                'api/ventas/' + id_user, {
                 method: 'GET'
             }
             ).then(res => res.json())

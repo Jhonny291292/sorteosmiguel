@@ -40,7 +40,12 @@ class VentasController extends Controller
     {
         // Agrupar por 'numero' y sumar el 'monto', incluyendo las relaciones de cliente y usuario
         $data = Pago::with(['cliente', 'user'])
-            ->where("cliente_id", $id)
+            ->select('numero', 'cliente_id', 'user_id')
+            ->selectRaw('SUM(monto) as total_pagado')
+            ->selectRaw('MAX(fecha) as fecha') // Trae la fecha más reciente
+            ->selectRaw('MAX(estatus) as estatus') // Trae el estatus más reciente
+            ->groupBy('numero', 'cliente_id', 'user_id')
+            ->where("user_id", $id)
             ->orderBy('numero', 'asc')
             ->get();
 
