@@ -15,7 +15,7 @@ class RifaController extends Controller
         $data = Pago::select('numero', 'cliente_id', 'monto', 'user_id')
             ->where('estatus', 'comprado')
             ->distinct() // Seleccionar números únicos
-            ->with('cliente') // Cargar la relación del cliente
+            ->with(['cliente', 'cliente.user']) // Cargar la relación del cliente y cliente usuario
             ->with('user')
             ->get();
 

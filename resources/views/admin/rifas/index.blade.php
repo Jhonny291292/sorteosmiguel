@@ -33,7 +33,8 @@ Rifas
                             <input type="hidden" id="number" name="number">
                             <div class="form-group">
                                 <label for="cedula" class="text-dark h5"><b>Cliente</b></label>
-                                <select class="form-control text-dark select2" id="cedula" name="cedula" style="width: 100%;" required></select>
+                                <select class="form-control text-dark select2" id="cedula" name="cedula"
+                                    style="width: 100%;" required></select>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -41,7 +42,8 @@ Rifas
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><b>Monto $</b></span>
                                 </div>
-                                <input type="number" step="0.01" class="form-control text-right" id="monto" name="monto">
+                                <input type="number" step="0.01" class="form-control text-right" id="monto"
+                                    name="monto">
                             </div>
                         </div>
                     </div>
@@ -100,7 +102,8 @@ Rifas
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><b>Monto $</b></span>
                                     </div>
-                                    <input type="number" step="0.01" class="form-control text-right" id="abono" name="monto">
+                                    <input type="number" step="0.01" class="form-control text-right" id="abono"
+                                        name="monto">
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-success mb-2">
@@ -110,7 +113,7 @@ Rifas
                     </div>
                     <hr>
                     <div class="text-center mb-2"><b>Pagos del Número</b></div>
-                    <div class="table-responsive p-0" {{--style="height: 120px;"--}}>
+                    <div class="table-responsive p-0" {{--style="height: 120px;" --}}>
                         <table class="table table-bordered table-head-fixed table-sm text-nowrap">
                             <thead>
                                 <tr>
@@ -125,7 +128,8 @@ Rifas
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-success " id="printBtn"> <i class="fas fa-file-pdf"></i> Reporte</button>
+                <button type="button" class="btn btn-success " id="printBtn"> <i class="fas fa-file-pdf"></i>
+                    Reporte</button>
                 <button type="button" class="btn btn-danger" id="btn-liberar">
                     ¿Quiere liberar este número?
                 </button>
@@ -135,15 +139,17 @@ Rifas
 </div>
 
 <!--Modal de lista de numeros faltantes por vender-->
-<div class="modal fade" id="modal-numerosFaltantes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal-numerosFaltantes" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-dark"><b>Números por vender</b></h5>
                 {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&minus;</span>
+                    <span aria-hidden="true">&minus;</span>
                 </button> --}}
-                <button type="button" class="btn btn-secondary " id="printBtn2"> <i class="fas fa-file-pdf"></i> Imprimir Reporte</button>
+                <button type="button" class="btn btn-secondary " id="printBtn2"> <i class="fas fa-file-pdf"></i>
+                    Imprimir Reporte</button>
             </div>
             <div id="contenido-imprimir2">
                 <div class="modal-body p-0">
@@ -166,24 +172,26 @@ Rifas
 <div class="modal fade" id="modal-ventas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-dark"><b>Total de Ventas</b></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&minus;</span>
-                    </button>
-                </div>
-                <div class="modal-body text-center">
-                    <div id="contenido-imprimir3">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title text-dark">El total de recaudado, hasta este momento, con la venta de los números de la rifa es de: </h5>
+            <div class="modal-header">
+                <h5 class="modal-title text-dark"><b>Total de Ventas</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&minus;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <div id="contenido-imprimir3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title text-dark">El total de recaudado, hasta este momento, con la venta de
+                                los números de la rifa es de: </h5>
                             <p class="card-text text-dark h4 totalV"></p>
-                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary " id="printBtn3"> <i class="fas fa-file-pdf"></i> Imprimir Reporte</button>
+                <button type="button" class="btn btn-secondary " id="printBtn3"> <i class="fas fa-file-pdf"></i>
+                    Imprimir Reporte</button>
             </div>
         </div>
     </div>
@@ -199,8 +207,10 @@ Rifas
             <div class="card-header">
                 <div class="clearfix">
                     <h5 class="card-title text-dark float-left"> <i class="fa fa-th"></i> <b>Rifa</b></h5>
-                    <button type="button" class="btn btn-success float-right ml-sm-0 ml-md-2 mb-2" id="btn-venta">Total en Ventas</button>
-                    <button type="button" class="btn btn-success float-right" id="btn-numerosFaltantes">Números Faltantes</button>
+                    <button type="button" class="btn btn-success float-right ml-sm-0 ml-md-2 mb-2" id="btn-venta">Total
+                        en Ventas</button>
+                    <button type="button" class="btn btn-success float-right" id="btn-numerosFaltantes">Números
+                        Faltantes</button>
                 </div>
             </div>
             <!-- /.card-header -->
@@ -226,17 +236,17 @@ Rifas
 
 @section('scripts')
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         const PrecioRifa = 10;
         //Initialize Select2 Elements
         $('.select2').select2({
             dropdownParent: $('#modal-rifa .modal-body'),
             language: {
-                noResults: function() {
+                noResults: function () {
 
                     return "No hay resultado";
                 },
-                searching: function() {
+                searching: function () {
 
                     return "Buscando..";
                 }
@@ -255,7 +265,7 @@ Rifas
         // hacer reporte del total de ventas de la rifa: debo hacer una funcion que consulte los montos de todos los numeros que tengan estado comprado y me sume el total
         function tablaNumeros() {
             let template = '',
-                template_Faltantes='',
+                template_Faltantes = '',
                 numeros = [],
                 secciones = [],
                 numeros_comprados = [],
@@ -274,11 +284,11 @@ Rifas
             }
 
             fetch('api/rifas', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error en la consulta...');
@@ -292,7 +302,7 @@ Rifas
                         const monto = parseFloat(e.monto);
                         // Sumar el monto a la variable totalMontosVendidos
                         totalMontosVendidos = data.totalMontosVendidos;
-                       
+
                         // Si el número ya existe en el objeto, sumamos el monto
                         if (montosPorNumero[numero]) {
                             montosPorNumero[numero] += monto;
@@ -302,25 +312,26 @@ Rifas
                         }
                         numeros_comprados.push(e.numero);
                         datos_clientes.push(e.cliente);
-                        datos_vendedores.push(e.user);
+                        // datos_vendedores.push(e.user);
+                        datos_vendedores.push(e.cliente.user);
 
                     });
 
                     // Crear una lista de números no comprados
                     const numeros_no_comprados = numeros.filter(num => !numeros_comprados.includes(num));
                     let n = numeros_no_comprados.length;
-                    $(".faltan").html('<h5>Números Faltantes: '+ n+'</h5>');
-                    for (let f = 0; f < numeros_no_comprados.length; f += 10){
-                        template_Faltantes +='<tr class="text-center">';
-                            for (let a = f; a < f + 10 && a < numeros_no_comprados.length; a++){
-                                const faltante = numeros_no_comprados[a]
-                                template_Faltantes += `<td class="text-dark">${faltante}</td>`;
-                            }    
-                        template_Faltantes +='</tr>';  
-                    }   
+                    $(".faltan").html('<h5>Números Faltantes: ' + n + '</h5>');
+                    for (let f = 0; f < numeros_no_comprados.length; f += 10) {
+                        template_Faltantes += '<tr class="text-center">';
+                        for (let a = f; a < f + 10 && a < numeros_no_comprados.length; a++) {
+                            const faltante = numeros_no_comprados[a]
+                            template_Faltantes += `<td class="text-dark">${faltante}</td>`;
+                        }
+                        template_Faltantes += '</tr>';
+                    }
 
                     //Monto total de ventas
-                    $(".totalV").html('<b>'+totalMontosVendidos+' $</b>')
+                    $(".totalV").html('<b>' + totalMontosVendidos + ' $</b>')
 
                     // Iterar sobre cada sección
                     secciones.forEach(section => {
@@ -359,8 +370,8 @@ Rifas
         tablaNumeros();
 
         // funcion para abrir el modal al hacer click en el numero de la lista
-        $(document).on('click', '.modalNumber', function(e) {
-            e.preventDefault();            
+        $(document).on('click', '.modalNumber', function (e) {
+            e.preventDefault();
             let numero = $(this).attr('data-number'); //numero que utilizare en la consulta
             let numeroF = $(this).attr('data-numberF'); //numero fromateado que uso en la vista del modal
             $("#number-rifa").html(`<h3 class="text-dark">${numeroF}</h3>`); // Numero que se muestra en la vista del modal
@@ -371,11 +382,11 @@ Rifas
         //Funcion que consulta los clientes registrados en el sistema
         function getClientes() {
             fetch('api/clientes', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error en la consulta...');
@@ -395,19 +406,19 @@ Rifas
                 .catch(error => console.error('Error:', error));
         }
         // Funcion para agregar Numero a la lista de pagos
-        $(document).on('submit', '#form-add, #form-abono', function(e) {
+        $(document).on('submit', '#form-add, #form-abono', function (e) {
             e.preventDefault();
             let form = new FormData(this);
             form.delete('_method');
             fetch('api/pagos', {
-                    method: 'POST',
-                    body: form,
-                    headers: {
-                        // 'Authorization': 'Bearer ' + token, 
-                    }
-                })
+                method: 'POST',
+                body: form,
+                headers: {
+                    // 'Authorization': 'Bearer ' + token, 
+                }
+            })
                 .then(res => res.json())
-                .then(function(data) {
+                .then(function (data) {
                     if (data.status) {
                         Swal.fire(
                             '¡Perfecto!',
@@ -431,7 +442,7 @@ Rifas
                             template += "<li class='text-left text-danger'>" + data.mjs + "</li>";
                         } else {
 
-                            $.each(data.errors, function(key, value) {
+                            $.each(data.errors, function (key, value) {
                                 template += "<li class='text-left text-danger'>" + value + "</li>";
                             });
 
@@ -452,7 +463,7 @@ Rifas
 
         })
 
-        $(document).on('click', '.modalLibear', function(e) {
+        $(document).on('click', '.modalLibear', function (e) {
             e.preventDefault();
             let vendedor = $(this).attr('data-vendedor');
             let cliente_id = $(this).attr('data-clienteId');
@@ -490,11 +501,13 @@ Rifas
             //console.log(numero);
             $("#fila-monto").show();
             fetch(
-                    `api/rifas/${cliente_id}/${numero}`, {
-                        method: 'GET'
-                    }
-                ).then(res => res.json())
-                .then(function(data) {
+                `api/rifas/${cliente_id}/${numero}`, {
+                method: 'GET'
+            }
+            ).then(res => res.json())
+                .then(function (data) {
+                    console.log(data);
+
                     if (data.status) {
                         var num = 1;
                         var template2 = "";
@@ -511,7 +524,7 @@ Rifas
                         });
                         $('#tbody-pagos').html(template2);
                     }
-                }).catch(function(err) {
+                }).catch(function (err) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -521,7 +534,7 @@ Rifas
 
         }
 
-        $(document).on('click', '#btn-liberar', function(e) {
+        $(document).on('click', '#btn-liberar', function (e) {
             e.preventDefault();
             let cliente_id = $("#id_cliente").val();
             let numero = $("#number_abono").val();
@@ -562,12 +575,12 @@ Rifas
                     })
 
                     fetch(
-                            `api/rifas/${cliente_id}/${numero}`, {
-                                method: 'DELETE'
-                            }
-                        ).then(res => res.json())
-                        .then(function(data) {
-                            console.log(data);
+                        `api/rifas/${cliente_id}/${numero}`, {
+                        method: 'DELETE'
+                    }
+                    ).then(res => res.json())
+                        .then(function (data) {
+                            // console.log(data);
                             if (data.status) {
                                 Swal.fire(
                                     '¡Perfecto!',
@@ -580,7 +593,7 @@ Rifas
                                 $('#modal-rifa').modal('hide');
                                 $('#modal-liberar').modal('hide');
                             }
-                        }).catch(function(err) {
+                        }).catch(function (err) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
@@ -592,7 +605,7 @@ Rifas
 
         });
 
-        document.getElementById('printBtn').onclick = function() {
+        document.getElementById('printBtn').onclick = function () {
             printModalContent();
         };
 
@@ -617,7 +630,7 @@ Rifas
             printWindow.print();
 
             // Cerrar la ventana después de imprimir
-            printWindow.onafterprint = function() {
+            printWindow.onafterprint = function () {
                 printWindow.close();
             };
 
@@ -634,11 +647,11 @@ Rifas
             // document.getElementById('modal-liberar').style.display = 'block';
         }
         //Funcion para abrir modal de numeros faltantes  
-        $(document).on('click', '#btn-numerosFaltantes', function() {
+        $(document).on('click', '#btn-numerosFaltantes', function () {
             $("#modal-numerosFaltantes").modal('show');
         })
         // metodo para capturar el click del boton de reporte de numeros faltantes  
-        document.getElementById('printBtn2').onclick = function() {
+        document.getElementById('printBtn2').onclick = function () {
             printModalContent2();
         };
         // funcion print para modal de numeros faltantes
@@ -662,17 +675,17 @@ Rifas
             printWindow2.print();
 
             // Cerrar la ventana después de imprimir
-            printWindow2.onafterprint = function() {
+            printWindow2.onafterprint = function () {
                 printWindow2.close();
             };
         }
 
         //Funcion para abrir modal de total de ventas
-        $(document).on('click', '#btn-venta', function(e) {
+        $(document).on('click', '#btn-venta', function (e) {
             $("#modal-ventas").modal("show");
         })
         // metodo para capturar el click del boton de reporte de total de ventas
-        document.getElementById('printBtn3').onclick = function() {
+        document.getElementById('printBtn3').onclick = function () {
             printModalContent3();
         };
         // funcion print para modal de ventas
@@ -696,7 +709,7 @@ Rifas
             printWindow3.print();
 
             // Cerrar la ventana después de imprimir
-            printWindow3.onafterprint = function() {
+            printWindow3.onafterprint = function () {
                 printWindow3.close();
             };
         }

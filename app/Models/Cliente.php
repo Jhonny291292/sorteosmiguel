@@ -17,10 +17,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $cedula
  * @property string|null $nombre
  * @property string|null $telefono
- * @property string|null $correo
+ * @property string|null $email
  * @property string|null $direccion
  * @property Carbon|null $fecha_reg
+ * @property int|null $user_id
  * 
+ * @property User|null $user
  * @property Collection|Pago[] $pagos
  *
  * @package App\Models
@@ -31,7 +33,8 @@ class Cliente extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'fecha_reg' => 'datetime'
+		'fecha_reg' => 'datetime',
+		'user_id' => 'int'
 	];
 
 	protected $fillable = [
@@ -40,8 +43,14 @@ class Cliente extends Model
 		'telefono',
 		'email',
 		'direccion',
-		'fecha_reg'
+		'fecha_reg',
+		'user_id'
 	];
+
+	public function user()
+	{
+		return $this->belongsTo(User::class);
+	}
 
 	public function pagos()
 	{

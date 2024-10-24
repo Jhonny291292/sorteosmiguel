@@ -23,15 +23,13 @@ Clientes
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="cedula">Cédula</label>
-                                <input type="text" class="form-control" id="cedula" name="cedula"
-                                    required>
+                                <input type="text" class="form-control" id="cedula" name="cedula" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="nombre">Nombre</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre"
-                                    required>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
                             </div>
                         </div>
                     </div>
@@ -39,15 +37,13 @@ Clientes
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email"
-                                    name="email">
+                                <input type="email" class="form-control" id="email" name="email">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="telefono">Teléfono</label>
-                                <input type="text" class="form-control" id="telefono"
-                                    name="telefono">
+                                <input type="text" class="form-control" id="telefono" name="telefono">
                             </div>
                         </div>
                     </div>
@@ -60,14 +56,24 @@ Clientes
                             </div>
                         </div>
                     </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="vendedor" class="text-dark h5"><b>Vendedor</b></label>
+                                <select class="form-control text-dark" name="vendedor" id="vendedor" required>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success" id="btn-submit">
                         <i class="fas fa-check"></i> Agregar
                     </button>
                 </div>
-         
-                <hr> 
+
+                <hr>
             </form>
         </div>
     </div>
@@ -110,25 +116,25 @@ Clientes
 
 @section('scripts')
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         var id_cliente_bd = "";
         consultarClientes();
-
+        consultarVendedores();
         // Enviar formulario de registro
-        $(document).on('submit', '#form-add', function(e) {
+        $(document).on('submit', '#form-add', function (e) {
             e.preventDefault();
             let form = new FormData(this);
             form.delete('_method');
 
             fetch('api/clientes', {
-                    method: 'POST',
-                    body: form,
-                    headers: {
-                        // 'Authorization': 'Bearer ' + token, 
-                    }
-                })
+                method: 'POST',
+                body: form,
+                headers: {
+                    // 'Authorization': 'Bearer ' + token, 
+                }
+            })
                 .then(res => res.json())
-                .then(function(data) {
+                .then(function (data) {
                     if (data.status) {
                         Swal.fire(
                             '¡Perfecto!',
@@ -148,7 +154,7 @@ Clientes
                             template += "<li class='text-left text-danger'>" + data.mjs + "</li>";
                         } else {
 
-                            $.each(data.errors, function(key, value) {
+                            $.each(data.errors, function (key, value) {
                                 template += "<li class='text-left text-danger'>" + value + "</li>";
                             });
 
@@ -169,19 +175,19 @@ Clientes
 
         })
 
-        $(document).on('submit', '#form-edit', function(e) {
+        $(document).on('submit', '#form-edit', function (e) {
             e.preventDefault();
 
             let form = new FormData(this);
             form.append('_method', 'PUT');
 
             fetch('api/clientes/' + id_cliente_bd, {
-                    method: 'POST',
-                    body: form,
-                    headers: {
-                        // 'Authorization': 'Bearer ' + token, 
-                    }
-                })
+                method: 'POST',
+                body: form,
+                headers: {
+                    // 'Authorization': 'Bearer ' + token, 
+                }
+            })
                 .then(res => res.json())
                 .then(data => {
                     console.log(data.data);
@@ -211,7 +217,7 @@ Clientes
 
         })
 
-        $(document).on("click", "#btnAdd", function() {
+        $(document).on("click", "#btnAdd", function () {
             $('#form-edit').trigger('reset');
             $('#form-add').trigger('reset');
             $('#form-edit').attr('id', 'form-add');
@@ -221,7 +227,7 @@ Clientes
             $("#btn-submit").show();
         })
 
-        $(document).on("click", ".edit", function() {
+        $(document).on("click", ".edit", function () {
             $('#form-edit').trigger('reset');
             $('#form-add').trigger('reset');
             $('#form-add').attr('id', 'form-edit');
@@ -234,7 +240,7 @@ Clientes
 
         })
 
-        $(document).on("click", ".detalle", function() {
+        $(document).on("click", ".detalle", function () {
             $('#form-edit').trigger('reset');
             $('#form-add').trigger('reset');
             $('#form-add *').prop('disabled', true);
@@ -246,7 +252,7 @@ Clientes
         })
 
 
-        $(document).on("click", ".del", function() {
+        $(document).on("click", ".del", function () {
             var id_cliente = $(this).attr('data-id');
 
             Swal.fire({
@@ -284,11 +290,11 @@ Clientes
                     })
 
                     fetch(
-                            'api/clientes/' + id_cliente, {
-                                method: 'DELETE'
-                            }
-                        ).then(res => res.json())
-                        .then(function(data) {
+                        'api/clientes/' + id_cliente, {
+                        method: 'DELETE'
+                    }
+                    ).then(res => res.json())
+                        .then(function (data) {
                             if (data.status) {
                                 Swal.fire(
                                     '¡Perfecto!',
@@ -299,7 +305,7 @@ Clientes
                                 //actualizamos la lista
                                 consultarClientes();
                             }
-                        }).catch(function(err) {
+                        }).catch(function (err) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
@@ -313,11 +319,11 @@ Clientes
         function consultarClientes() {
 
             fetch('api/clientes', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error en la consulta...');
@@ -368,11 +374,11 @@ Clientes
         function showDatosOrg(id_cliente) {
             id_cliente_bd = id_cliente
             fetch(
-                    'api/clientes/' + id_cliente, {
-                        method: 'GET'
-                    }
-                ).then(res => res.json())
-                .then(function(data) {
+                'api/clientes/' + id_cliente, {
+                method: 'GET'
+            }
+            ).then(res => res.json())
+                .then(function (data) {
                     if (data.status) {
                         data.data.forEach(e => {
 
@@ -381,16 +387,42 @@ Clientes
                             $("#email").val(e.email);
                             $("#telefono").val(e.telefono);
                             $("#direccion").text(e.direccion);
+                            $("#vendedor").val(e.user_id);
 
                         });
                     }
-                }).catch(function(err) {
+                }).catch(function (err) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
                         text: err
                     })
                 })
+        }
+
+        function consultarVendedores() {
+            fetch('api/user', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la consulta...');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    var template = "";
+                    template = `<option value="" selected="selected"></option>`
+                    data.data.forEach(e => {
+                        template += `<option value="${e.id}">${e.name}</option>`;
+                    });
+                    $('#vendedor').html(template);
+
+                })
+                .catch(error => console.error('Error:', error));
         }
     });
 </script>

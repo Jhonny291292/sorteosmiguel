@@ -22,15 +22,15 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-      <!-- Select2 -->
-  <link rel="stylesheet" href="{{asset("plugins/select2/dist/css/select2.css")}}">
-    
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{asset("plugins/select2/dist/css/select2.css")}}">
+
     <link rel="stylesheet" href="{{asset("plugins/datatables-bs4/css/dataTables.bootstrap4.min.css")}}">
     <link rel="stylesheet" href="{{asset("plugins/datatables-responsive/css/responsive.bootstrap4.min.css")}}">
     <link rel="stylesheet" href="{{asset("plugins/datatables-buttons/css/buttons.bootstrap4.min.css")}}">
-        <!-- Custom fonts for this template-->
-        <link href="{{asset('plugins/vendor/fontawesome-free/css/all.min.css')}} " rel="stylesheet" type="text/css">
-@yield('css')
+    <!-- Custom fonts for this template-->
+    <link href="{{asset('plugins/vendor/fontawesome-free/css/all.min.css')}} " rel="stylesheet" type="text/css">
+    @yield('css')
     <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
     <!-- <script src="https://kit.fontawesome.com/b99e675b6e.js"></script> -->
 
@@ -89,6 +89,12 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
+            <li class="nav-item active">
+                <a class="nav-link" href="{{route('ventas.list')}}">
+                    <i class="fas fa-fw fa-user"></i>
+                    Registro de Ventas
+                </a>
+            </li>
         </ul>
         <!-- End of Sidebar -->
 
@@ -141,14 +147,14 @@
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="mx-3">
-                    <strong>Copyright &copy; 2024-2025 <a href=""> 
-                        <!-- Nombre de la empresa -->
-                    </a>.</strong>
+                    <strong>Copyright &copy; 2024-2025 <a href="">
+                            <!-- Nombre de la empresa -->
+                        </a>.</strong>
                     Todos los derechos reservados.
                     <div class="float-right d-none d-sm-inline-block">
-                        <b> 
+                        <b>
 
-                        <!-- aqui van los desarrolladores -->
+                            <!-- aqui van los desarrolladores -->
                         </b>
                     </div>
                 </div>

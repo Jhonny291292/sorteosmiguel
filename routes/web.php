@@ -5,6 +5,7 @@ use App\Http\Controllers\PagoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RifaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VentasController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/clientes', [ClienteController::class, 'list'])->name('clientes.list');
     Route::get('/pagos', [PagoController::class, 'list'])->name('pagos.list');
     Route::get('/usuarios', [UserController::class, 'list'])->name('usuarios.list');
+    Route::get('/ventas', [VentasController::class, 'list'])->name('ventas.list');
 });
 
 // require __DIR__.'/auth.php';

@@ -37,7 +37,8 @@ class ClienteController extends Controller
             'nombre' => $request->nombre,
             'email' => $request->email,
             'telefono' => $request->telefono,
-            'direccion' => $request->direccion
+            'direccion' => $request->direccion,
+            'user_id' => $request->vendedor
         ]);
         return response()->json([
             'status' => 'ok',
@@ -87,7 +88,8 @@ class ClienteController extends Controller
             'nombre' => $request->nombre,
             'email' => $request->email,
             'telefono' => $request->telefono,
-            'direccion' => $request->direccion
+            'direccion' => $request->direccion,
+            'user_id' => $request->vendedor
         ])->save();
 
         return response()->json([
