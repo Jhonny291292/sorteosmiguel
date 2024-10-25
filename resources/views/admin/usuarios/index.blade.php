@@ -101,7 +101,7 @@ Usuarios
 @endsection
 
 @section('content')
-<div class="container p-5">
+
     <div class="card card-outline card-danger">
         <div class="card-title p-4 border-bottom">
             <div class="row">
@@ -116,7 +116,7 @@ Usuarios
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped" id="tabla-usuarios">
+                <table class="table table-bordered table-sm table-striped" id="tabla-usuarios">
                     <thead class="text-center">
                         <th>N°</th>
                         <th>Nombre</th>
@@ -129,7 +129,7 @@ Usuarios
             </div>
         </div>
     </div>
-</div>
+
 @endsection
 
 @section('scripts')
@@ -381,13 +381,13 @@ Usuarios
                                 <td class="text-center"> ${e.email}</td>
                                 <td class="text-center"> ${e.rol}</td>
                                 <td class="d-flex justify-content-center"> 
-                                    <button type="button" class="detalle_ventas btn btn-success" data-id="${e.id}" data-nombre="${e.name}" data-toggle="modal" data-target="#modal-ventas">
+                                    <button type="button" class="detalle_ventas btn btn-sm btn-success" data-id="${e.id}" data-nombre="${e.name}" data-toggle="modal" data-target="#modal-ventas">
                                       <i class="fas fa-info-circle"></i>
                                     </button>
-                                    <button type="button" class="edit btn btn-warning" data-id="${e.id}" data-toggle="modal" data-target="#modal-organismo">
+                                    <button type="button" class="edit btn btn-sm btn-warning" data-id="${e.id}" data-toggle="modal" data-target="#modal-organismo">
                                       <i class="fas fa-edit"></i>
                                     </button>
-                                    <button type="button" class="del btn btn-danger" data-id="${e.id}">
+                                    <button type="button" class="del btn btn-sm btn-danger" data-id="${e.id}">
                                       <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </td>
