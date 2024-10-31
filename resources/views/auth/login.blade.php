@@ -335,7 +335,6 @@ small{
 	font-size: 2rem;
 }
 </style>
-
 @section('content')
 <div class="container">
 	<!-- <img src="{{asset('img/logoRifa.jpeg')}}" alt="..."> -->
