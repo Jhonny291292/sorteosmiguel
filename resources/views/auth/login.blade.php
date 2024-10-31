@@ -335,7 +335,6 @@ small{
 	font-size: 2rem;
 }
 </style>
-
 @section('content')
 <div class="container">
 	<!-- <img src="{{asset('img/logoRifa.jpeg')}}" alt="..."> -->
@@ -355,18 +354,20 @@ small{
 				</div>
 				<div class="login__field">
 					<i class="login__icon fas fa-lock"></i>
-					<input type="password" id="password" class="login__input" placeholder="Contraseña" @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-					@error('password')
-					<span class="invalid-feedback" role="alert">
-						<strong>{{ $message }}</strong>
+					<input type="password" id="password" class="login__input" placeholder="Contraseña" @error('password') is-invalid @enderror name="password" required autocomplete="current-password">
+					<span class="toggle-password" style="position: absolute; top: 30px; cursor: pointer;">
+						<i class="fas fa-eye" id="togglePassword"></i>
 					</span>
-				@enderror
+					@error('password')
+						<span class="invalid-feedback" role="alert">
+							<strong>{{ $message }}</strong>
+						</span>
+					@enderror
 				</div>
-					<button type="submit" class="button login__submit">
+				<button type="submit" class="button login__submit">
 					{{ __('Ingresar') }}
 				</button>
 					<span class="button__text"></span>
-					<i class="button__icon fas fa-chevron-right"></i>
 				</button>				
 			</form>
 			
