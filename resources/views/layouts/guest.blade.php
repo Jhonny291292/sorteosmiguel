@@ -10,6 +10,7 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="{{asset('plugins/vendor/fontawesome-free/css/all.min.css')}} " rel="stylesheet" type="text/css">
 
         <!-- Scripts -->
         {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
@@ -18,5 +19,28 @@
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
             @yield('content')
         </div>
+        <script src="{{asset('plugins/vendor/jquery/jquery.min.js')}}"></script>
+        <script src="{{asset('plugins/vendor/fontawesome-free/js/all.min.js')}}"> </script>
+
+<script>
+	$(document).ready(function() {
+		const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#password');
+
+        $(document).on('click', '#togglePassword', function (e) {
+            // Alternar el tipo de input
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            // Alternar el ícono del ojo
+            if (type === 'password') {
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            } else {
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            }
+        });
+	});
+</script>
     </body>
 </html>
