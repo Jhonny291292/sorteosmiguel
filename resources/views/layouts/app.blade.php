@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="{{asset("plugins/datatables-buttons/css/buttons.bootstrap4.min.css")}}">
     <!-- Custom fonts for this template-->
     <link href="{{asset('plugins/vendor/fontawesome-free/css/all.min.css')}} " rel="stylesheet" type="text/css">
+            <link rel="shortcut icon" href="{{asset("img/logoRifa.jpeg")}}" type="image/x-icon">
     @yield('css')
     <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
     <!-- <script src="https://kit.fontawesome.com/b99e675b6e.js"></script> -->
