@@ -13,8 +13,8 @@ body{
 	margin: 0;
 	padding: 0;
 	height: 10vh;
-	background: rgb(195,195,195);
-background: radial-gradient(circle, rgba(195,195,195,1) 0%, rgba(235,247,239,1) 100%);
+	background: rgb(255, 255, 255);
+background: radial-gradient(circle, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
 	/* background-image: linear-gradient(90deg, #d2dad3, #fcfffdec);		
 	background-repeat: no-repeat;
 	background-size: 100% 100%; */
@@ -162,6 +162,8 @@ small{
 	align-items: center;
 	justify-content: center;
 	min-height: 100vh;
+	background: rgb(255, 255, 255);
+	background: radial-gradient(circle, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
 	
 }
 
@@ -336,49 +338,57 @@ small{
 }
 </style>
 @section('content')
-<div class="container">
-	<!-- <img src="{{asset('img/logoRifa.jpeg')}}" alt="..."> -->
-	<div class="screen">
-		<div class="screen__content">
-			<form class="login" method="POST" action="{{ route('login') }}">
-			@csrf
-			<h3 class="tituloform" style="color: #053a14;"><strong>Inicia Sesión</strong></h3>
-				<div class="login__field">
-					<i class="login__icon fas fa-user"></i>
-					<input type="email" id="email" class="login__input" placeholder="Email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-					@error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-				</div>
-				<div class="login__field">
-					<i class="login__icon fas fa-lock"></i>
-					<input type="password" id="password" class="login__input" placeholder="Contraseña" @error('password') is-invalid @enderror name="password" required autocomplete="current-password">
-					<span class="toggle-password" style="position: absolute; top: 30px; cursor: pointer;">
-						<i class="fas fa-eye" id="togglePassword"></i>
-					</span>
-					@error('password')
-						<span class="invalid-feedback" role="alert">
-							<strong>{{ $message }}</strong>
-						</span>
-					@enderror
-				</div>
-				<button type="submit" class="button login__submit">
-					{{ __('Ingresar') }}
-				</button>
-					<span class="button__text"></span>
-				</button>				
-			</form>
-			
+<div class="container bg-light">
+
+	<div class="card bg-transparent border-0" style="width: 25rem;">
+		<div class="d-flex justify-content-center">
+			<img class="card-img-top" src="{{asset('img/logoRifa2.jpeg')}}" style="width: 40%; height: 7em;" alt="">
 		</div>
-		<div class="screen__background">
-			<span class="screen__background__shape screen__background__shape4"></span>
-			<span class="screen__background__shape screen__background__shape3"></span>		
-			<span class="screen__background__shape screen__background__shape2"></span>
-			<span class="screen__background__shape screen__background__shape1"></span>
-		</div>		
+		<div class="card-body">
+			<div class="screen">
+				<div class="screen__content">
+					<form class="login" method="POST" action="{{ route('login') }}">
+					@csrf
+					<h3 class="tituloform" style="color: #053a14;"><strong>Inicia Sesión</strong></h3>
+						<div class="login__field">
+							<i class="login__icon fas fa-user"></i>
+							<input type="email" id="email" class="login__input" placeholder="Email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+							@error('email')
+											<span class="invalid-feedback" role="alert">
+												<strong>{{ $message }}</strong>
+											</span>
+										@enderror
+						</div>
+						<div class="login__field">
+							<i class="login__icon fas fa-lock"></i>
+							<input type="password" id="password" class="login__input" placeholder="Contraseña" @error('password') is-invalid @enderror name="password" required autocomplete="current-password">
+							<span class="toggle-password" style="position: absolute; top: 30px; cursor: pointer;">
+								<i class="fas fa-eye" id="togglePassword"></i>
+							</span>
+							@error('password')
+								<span class="invalid-feedback" role="alert">
+									<strong>{{ $message }}</strong>
+								</span>
+							@enderror
+						</div>
+						<button type="submit" class="button login__submit">
+							{{ __('Ingresar') }}
+						</button>
+							<span class="button__text"></span>
+						</button>				
+					</form>
+					
+				</div>
+				<div class="screen__background">
+					<span class="screen__background__shape screen__background__shape4"></span>
+					<span class="screen__background__shape screen__background__shape3"></span>		
+					<span class="screen__background__shape screen__background__shape2"></span>
+					<span class="screen__background__shape screen__background__shape1"></span>
+				</div>		
+			</div>
+		</div>
 	</div>
+
 </div>
 @endsection
 
